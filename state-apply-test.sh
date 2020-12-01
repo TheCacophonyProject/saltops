@@ -12,7 +12,7 @@ if [[ -z $device ]]; then
 fi
 
 # copy files to local folder
-cp -r basics.sls _modules/ pi/ _states/ timezone.sls salt/
+cp -r basics.sls _modules/ pi/ _states/ salt-migration/ timezone.sls salt/
 
 ssh pi@$device "sudo rm -rf salt /srv/salt"
 

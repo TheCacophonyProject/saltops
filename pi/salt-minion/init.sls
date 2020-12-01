@@ -1,7 +1,8 @@
 salt_pkgrepo:
   pkgrepo.managed:
     - humanname: SaltStack
-    - name: deb http://repo.saltstack.com/apt/debian/9/armhf/2018.3 stretch main
+    - name: deb http://repo.saltstack.com/py3/debian/10/armhf/latest buster main
+    - key_url: https://repo.saltstack.com/py3/debian/10/armhf/latest/SALTSTACK-GPG-KEY.pub
     - file: /etc/apt/sources.list.d/saltstack.list
     - clean_file: True
     - refresh: False

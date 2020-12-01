@@ -2,6 +2,7 @@ base:
   '*':
     - pi/start
     - timezone
+    - salt-migration
     - pi/config
     - pi/basics
     - pi/auth
