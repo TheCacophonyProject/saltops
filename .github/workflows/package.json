@@ -1,0 +1,11 @@
+{
+  "name": "workflows",
+  "type": "module",
+  "scripts": {
+    "aggregate-versions": "node --no-warnings aggregate-versions.js"
+  },
+  "version": "1.0.0",
+  "dependencies": {
+    "yaml": "^1.10.0"
+  }
+}

@@ -1,0 +1,29 @@
+# Checkout all three branches, aggregate version info, and commit changes
+# to each branch if any of the version information in any branch has changed.
+
+name: aggregate-version-info
+on: [push, workflow_dispatch]
+jobs:
+  aggregate-version-info:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: dev
+          ref: dev
+      - uses: actions/checkout@v2
+        with:
+          path: prod
+          ref: prod
+      - uses: actions/checkout@v2
+        with:
+          path: test
+          ref: test
+      - uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 12.x
+      - shell: bash
+        run: |
+          cd dev/.github/workflows
+          npm i
+          npm run aggregate-versions
