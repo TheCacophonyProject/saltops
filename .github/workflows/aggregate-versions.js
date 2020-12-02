@@ -96,11 +96,27 @@ const formatDate = date => {
     if (versionOutput !== prevVersionOutput) {
       fs.writeFileSync("README.md", output);
       console.log("Committing changes for branch", branch);
-      await exec("git config user.name github-actions");
-      await exec("git config user.email github-actions@github.com");
-      await exec("git add .");
-      await exec("git commit -m \"updated version information\"");
-      await exec("git push");
+      {
+        const {stderr, stdout} = await exec("git config user.name github-actions");
+        console.log("1:", stderr, stdout);
+      }
+      {
+        const {stderr, stdout} = await exec("git config user.email github-actions@github.com");
+        console.log("2:", stderr, stdout);
+      }
+      {
+        const {stderr, stdout} = await exec("git add .");
+        console.log("3:", stderr, stdout);
+      }
+      {
+        const {stderr, stdout} = await exec("git commit -m \"updated version information\"");
+        console.log("4:", stderr, stdout);
+      }
+      {
+        const {stderr, stdout} = await exec("git push");
+        console.log("5:", stderr, stdout);
+      }
+
 
     } else {
       // Version info is unchanged.
