@@ -97,11 +97,11 @@ const formatDate = date => {
       fs.writeFileSync("README.md", output);
       console.log("Committing changes for branch", branch);
       {
-        const {stderr, stdout} = await exec("git config user.name github-actions");
+        const {stderr, stdout} = await exec("git config user.name cacophony-bot");
         console.log("1:", stderr, stdout);
       }
       {
-        const {stderr, stdout} = await exec("git config user.email github-actions@github.com");
+        const {stderr, stdout} = await exec("git config user.email bot@cacophony.org.nz");
         console.log("2:", stderr, stdout);
       }
       {
@@ -113,11 +113,10 @@ const formatDate = date => {
         console.log("4:", stderr, stdout);
       }
       {
-        const {stderr, stdout} = await exec("git push");
+        console.log("Pushing");
+        const {stderr, stdout} = await exec("git push --force");
         console.log("5:", stderr, stdout);
       }
-
-
     } else {
       // Version info is unchanged.
       console.log("version information unchanged");

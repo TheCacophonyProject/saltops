@@ -2,6 +2,8 @@
 # to each branch if any of the version information in any branch has changed.
 
 name: aggregate-version-info
+env:
+  GITHUB_TOKEN: ${{ secrets.CACOPHONY_BOT_TOKEN }}
 on: [push, workflow_dispatch]
 jobs:
   aggregate-version-info:
