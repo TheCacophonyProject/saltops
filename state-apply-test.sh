@@ -25,6 +25,6 @@ echo "moving files to /srv"
 ssh pi@$device "sudo cp -r salt /srv/"
 echo "done"
 
-cmd="ssh pi@$device \"sudo salt-call --local state.apply $params --state-output=mixed\""
+cmd="ssh pi@$device \"sudo salt-call --local state.apply $params --state-output=changes\""
 echo "running $cmd"
 eval $cmd
