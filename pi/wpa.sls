@@ -7,7 +7,7 @@ set_wifi_country:
 ensure_bushnet_ssid:
   file.replace:
     - name: /etc/wpa_supplicant/wpa_supplicant.conf
-    - pattern: 'network={\n*\s*ssid="bushnet"\n*\s*psk="feathers"\n*\s*priority=2\n*\s*}'
+    - pattern: 'network={\n*\s*ssid="bushnet"\n*\s*psk="feathers"\n*\s*priority=2\n*\s*}\n'
     - repl: |
         network={
             ssid="bushnet"
@@ -19,7 +19,7 @@ ensure_bushnet_ssid:
 ensure_bushnet_ssid_with_cap:
   file.replace:
     - name: /etc/wpa_supplicant/wpa_supplicant.conf
-    - pattern: 'network={\n*\s*ssid="Bushnet"\n*\s*psk="feathers"\n*\s*priority=2\n*\s*}'
+    - pattern: 'network={\n*\s*ssid="Bushnet"\n*\s*psk="feathers"\n*\s*priority=2\n*\s*}\n'
     - repl: |
         network={
             ssid="Bushnet"
