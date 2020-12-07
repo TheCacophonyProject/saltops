@@ -84,7 +84,7 @@ const formatDate = date => {
       versionOutput += ` * ${key}: ${val}\n`;
     }
     if (releaseNotesLinks[branch]) {
-      versionOutput += `\n[Release notes](${releaseNotesLinks[branch]}\n`;
+      versionOutput += `\n[Release notes](${releaseNotesLinks[branch]})\n`;
     }
   }
 
