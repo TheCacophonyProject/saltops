@@ -16,7 +16,7 @@ The `prod` branch is updated through pulling the latest changes from `test`. Thi
 - Push changes to personal fork and make a PR on GitHub
 
 
-#### Version information (_Updated 8/12/2020, 11:37:46 AM_):
+#### Version information (_Updated 8/12/2020, 11:39:41 AM_):
 ____
 #### Branch `prod`
  * attiny-controller: 3.4.0
@@ -30,7 +30,7 @@ ____
  * thermal-recorder: 2.9.2
  * thermal-uploader: 2.2.0
 
-[Release notes](https://docs.cacophony.org.nz/home/release-notes-2020
+[Release notes](https://docs.cacophony.org.nz/home/release-notes-2020)
 #### Branch `test`
  * attiny-controller: 3.4.0
  * audiobait: 2.2.0
@@ -55,4 +55,4 @@ ____
  * thermal-recorder: 2.10.2
  * thermal-uploader: 2.2.0
 
-[Release notes](https://docs.cacophony.org.nz/home/release-notes-2
+[Release notes](https://docs.cacophony.org.nz/home/release-notes-2)
