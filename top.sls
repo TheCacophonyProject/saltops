@@ -22,6 +22,7 @@ dev:
     - pi/management-interface
     - pi/device-register
     - pi/energy-savings
+    - pi/salt-updater
     - pi/removed
     - pi/maybe-reboot
     - pi/end
