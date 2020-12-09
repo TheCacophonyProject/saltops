@@ -22,5 +22,6 @@ base:
     - pi/energy-savings
     - pi/salt-updater
     - pi/removed
+    - pi/dev-pis
     - pi/maybe-reboot
     - pi/end
