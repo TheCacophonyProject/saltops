@@ -2,13 +2,13 @@
 # Ensure that salt-updater is installed, configured & running
 #############################################################
 
-update-updater-pkg:
+salt-updater-pkg:
   cacophony.pkg_installed_from_github:
     - name: salt-updater
-    - version: "0.1.0"
+    - version: "0.3.0"
 
 salt-updater:
   service.running:
     - enable: True
     - watch:
-      - modemd-pkg
+      - salt-updater-pkg
