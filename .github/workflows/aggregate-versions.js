@@ -4,14 +4,17 @@ import util from "util";
 import {exec as execAsync} from "child_process";
 const exec = util.promisify(execAsync);
 
+const args = process.argv;
+const repo = args[2];
+
 const getFilesWithExtension = (path, ext) => {
   const items = fs.readdirSync(path)
-    .filter(item => (
-      !item.startsWith(".") &&
-      !item.startsWith("_") &&
-      (item.endsWith(`.${ext}`) || fs.lstatSync(`${path}/${item}`).isDirectory())
-    ))
-    .map(item => ({ name: item, isDir: fs.lstatSync(`${path}/${item}`).isDirectory() }));
+      .filter(item => (
+          !item.startsWith(".") &&
+          !item.startsWith("_") &&
+          (item.endsWith(`.${ext}`) || fs.lstatSync(`${path}/${item}`).isDirectory())
+      ))
+      .map(item => ({ name: item, isDir: fs.lstatSync(`${path}/${item}`).isDirectory() }));
   let files = [];
   for (const item of items) {
     if (item.isDir) {
@@ -51,7 +54,11 @@ const formatDate = date => {
 
   process.chdir("../../../");
   // For each branch:
-  const branches = ["dev", "test", "prod"];
+  const branches = ["prod", "test", "dev"];
+  const releaseNotesLinks = {
+    prod: "https://docs.cacophony.org.nz/home/release-notes-2020",
+    dev: "https://docs.cacophony.org.nz/home/release-notes-2"
+  };
   for (const branch of branches) {
     process.chdir(`./${branch}`);
     const slsFiles = getFilesWithExtension(".", "sls");
@@ -76,25 +83,31 @@ const formatDate = date => {
     for (const [key, val] of Object.entries(versionData[branch])) {
       versionOutput += ` * ${key}: ${val}\n`;
     }
-  }
-  for (const branch of branches) {
-    let prevVersionOutput = "";
-    process.chdir(`./${branch}`);
-    const readme = fs.readFileSync("README.md", "utf8");
-    const versionInfoStart = readme.indexOf("\n\n#### Version information");
-    let output;
-    if (versionInfoStart !== -1) {
-      output = readme.substring(0, versionInfoStart);
-      prevVersionOutput = readme.substring(readme.indexOf(separator) + separator.length);
-    } else {
-      output = readme;
+    if (releaseNotesLinks[branch]) {
+      versionOutput += `\n[Release notes](${releaseNotesLinks[branch]})\n`;
     }
-    output += "\n\n#### Version information ";
-    output += `(_Updated ${formatDate(now)}_):\n`;
-    output += separator;
-    output += versionOutput;
-    if (versionOutput !== prevVersionOutput) {
-      fs.writeFileSync("README.md", output);
+  }
+
+  // Just write out on the dev branch.
+  const branch = "dev";
+  let prevVersionOutput = "";
+  process.chdir(`./${branch}`);
+  const readme = fs.readFileSync("README.md", "utf8");
+  const versionInfoStart = readme.indexOf("\n\n#### Version information");
+  let output;
+  if (versionInfoStart !== -1) {
+    output = readme.substring(0, versionInfoStart);
+    prevVersionOutput = readme.substring(readme.indexOf(separator) + separator.length);
+  } else {
+    output = readme;
+  }
+  output += "\n\n#### Version information ";
+  output += `(_Updated ${formatDate(now)}_):\n`;
+  output += separator;
+  output += versionOutput;
+  if (versionOutput !== prevVersionOutput) {
+    fs.writeFileSync("README.md", output);
+    if (repo === "TheCacophonyProject/saltops") {
       console.log("Committing changes for branch", branch);
       {
         const {stderr, stdout} = await exec("git config user.name cacophony-bot");
@@ -117,10 +130,11 @@ const formatDate = date => {
         const {stderr, stdout} = await exec("git push --force");
         console.log("5:", stderr, stdout);
       }
-    } else {
-      // Version info is unchanged.
-      console.log("version information unchanged");
     }
-    process.chdir("../");
+  } else {
+    // Version info is unchanged.
+    console.log("version information unchanged");
   }
+  process.chdir("../");
+
 }());
