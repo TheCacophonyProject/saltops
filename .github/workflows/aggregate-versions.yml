@@ -28,4 +28,4 @@ jobs:
         run: |
           cd dev/.github/workflows
           npm i
-          npm run aggregate-versions
+          npm run aggregate-versions ${{ github.repository }}
