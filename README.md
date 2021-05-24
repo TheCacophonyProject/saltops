@@ -16,7 +16,7 @@ The `prod` branch is updated through pulling the latest changes from `test`. Thi
 - Push changes to personal fork and make a PR on GitHub
 
 
-#### Version information (_Updated 18/5/2021, 4:03:24 PM_):
+#### Version information (_Updated 24/5/2021, 2:40:20 PM_):
 ____
 #### Branch `prod`
  * attiny-controller: 3.5.0
@@ -50,10 +50,10 @@ ____
  * go-config: 1.3.1
  * device-register: 1.3.0
  * event-reporter: 3.3.0
- * management-interface: 1.8.0
+ * management-interface: 1.9.0
  * modemd: 1.2.2
  * rtc-utils: 1.3.0
- * salt-updater: 0.3.0
+ * salt-updater: 0.4.0
  * thermal-recorder: 2.13.0
  * thermal-uploader: 2.2.0
 
