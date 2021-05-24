@@ -11,13 +11,6 @@ extra-filesystems:
       - exfat-utils
       - ntfs-3g
 
-# Mount point for USB drives to write CPTV files to
-cp-volume-mount:
-  file.append:
-    - name: "/etc/fstab"
-    - text:
-      - "LABEL=cp /media/cp auto auto,nofail,noexec,nodev,noatime,nodiratime 0 2"
-
 thermal-recorder-service:
   service.running:
     - name: thermal-recorder
