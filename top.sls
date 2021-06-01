@@ -136,6 +136,8 @@ prod:
     - pi/management-interface
     - pi/device-register
     - pi/energy-savings
+    - pi/prod-pis
+    - pi/salt-updater
     - pi/removed
     - pi/maybe-reboot
     - pi/end
