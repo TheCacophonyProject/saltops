@@ -16,19 +16,19 @@ The `prod` branch is updated through pulling the latest changes from `test`. Thi
 - Push changes to personal fork and make a PR on GitHub
 
 
-#### Version information (_Updated 31/5/2021, 2:27:34 PM_):
+#### Version information (_Updated 1/6/2021, 3:29:17 PM_):
 ____
 #### Branch `prod`
  * attiny-controller: 3.5.0
- * audiobait: 2.2.0
+ * audiobait: 3.0.1
  * go-config: 1.3.1
- * device-register: 1.1.0
+ * device-register: 1.3.0
  * event-reporter: 3.3.0
- * management-interface: 1.7.3
+ * management-interface: 1.9.0
  * modemd: 1.2.2
  * rtc-utils: 1.3.0
- * salt-updater: 0.3.0
- * thermal-recorder: 2.11.0
+ * salt-updater: 0.4.0
+ * thermal-recorder: 2.13.0
  * thermal-uploader: 2.2.0
 
 [Release notes](https://docs.cacophony.org.nz/home/release-notes-2020)
