@@ -1,7 +1,7 @@
 audiobait-pkg:
   cacophony.pkg_installed_from_github:
     - name: audiobait
-    - version: "2.2.0"
+    - version: "3.0.1"
 
 /var/lib/audiobait:
   file.directory
