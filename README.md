@@ -16,7 +16,7 @@ The `prod` branch is updated through pulling the latest changes from `test`. Thi
 - Push changes to personal fork and make a PR on GitHub
 
 
-#### Version information (_Updated 22/6/2021, 1:28:56 PM_):
+#### Version information (_Updated 22/6/2021, 4:41:06 PM_):
 ____
 #### Branch `prod`
  * attiny-controller: 3.5.0
@@ -47,7 +47,7 @@ ____
 #### Branch `dev`
  * attiny-controller: 3.5.0
  * audiobait: 3.0.1
- * go-config: 1.3.1
+ * go-config: 1.6.4
  * device-register: 1.4.0
  * event-reporter: 3.3.0
  * management-interface: 1.9.0
