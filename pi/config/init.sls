@@ -4,7 +4,7 @@
 cacophony-config-pkg:
   cacophony.pkg_installed_from_github:
     - name: go-config
-    - version: "1.3.1"
+    - version: "1.6.4"
     - pkg_name: cacophony-config
 
 # Archive old config files
