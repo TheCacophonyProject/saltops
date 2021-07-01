@@ -13,14 +13,6 @@ jobs:
         with:
           path: dev
           ref: dev
-      - uses: actions/checkout@v2
-        with:
-          path: prod
-          ref: prod
-      - uses: actions/checkout@v2
-        with:
-          path: test
-          ref: test
       - uses: actions/setup-node@v2.1.2
         with:
           node-version: 12.x
