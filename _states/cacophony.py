@@ -16,7 +16,7 @@ def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True)
     """
 
     # Guard against versions being converted to floats in YAML parsing.
-    assert isinstance(version, basestring), "version must be a string"
+    assert isinstance(version, str), "version must be a string"
 
     if pkg_name == None:
         pkg_name = name
@@ -89,7 +89,7 @@ def init_alsa(name):
 
 def _is_audio_setup():
     output = subprocess.check_output("amixer")
-    return "Simple mixer control 'PCM',0" in output
+    return b"Simple mixer control 'PCM',0" in output
 
 
 def _remove_if_present(name):
