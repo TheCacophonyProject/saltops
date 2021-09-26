@@ -87,7 +87,7 @@ def init_alsa(name):
 
 
 def _is_audio_setup():
-    output = subprocess.check_output("amixer")
+    output = str(subprocess.check_output("amixer"))
     return "Simple mixer control 'PCM',0" in output
 
 
