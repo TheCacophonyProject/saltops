@@ -1,3 +1,4 @@
 *
 !.gitignore
-!top.sls
+!rpi-top.sls
+!server-top.sls
