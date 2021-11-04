@@ -1,7 +1,7 @@
 thermal-recorder-pkg:
   cacophony.pkg_installed_from_github:
     - name: thermal-recorder
-    - version: "2.14.0"
+    - version: "2.15.0"
 
 # Install support for exFAT & NTFS filesystems (for USB drives)
 extra-filesystems:
