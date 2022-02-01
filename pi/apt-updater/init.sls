@@ -1,5 +1,4 @@
 #Set to 'prod' or 'test' to determine apt channel applied
-{% set channel = 'test' %}
 
 # Cacophony apt-sources
 /etc/apt/apt-updater-sources.list.d:
@@ -10,6 +9,12 @@
      - mode: 755
 
 {% set os_release = salt['cmd.run']('/usr/bin/lsb_release -c -s') %}
+{% set nodegroup = salt['cmd.run']('cat /etc/cacophony/salt-nodegroup') %}
+{% if nodegroup=='prod-pis' %}
+  {% set channel = 'prod' %}
+{% else %}
+  {% set channel = 'test' %}
+{% endif %}
 
 /etc/apt/apt-updater-sources.list:
    file.managed:
