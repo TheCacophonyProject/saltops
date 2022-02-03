@@ -4,12 +4,6 @@ delaytime=$(($RANDOM % 7200))
 logger apt-updater: Waiting ${delaytime} secs before updating
 sleep ${delaytime}
 
-#add the cacophony key if needed
-gpg --list-keys D06E5F3176AFF9A6 || sudo apt-key adv --keyserver keys.openpgp.org --recv-key D06E5F3176AFF9A6
-
-#check if key was added, abort if not
-gpg --list-keys D06E5F3176AFF9A6 || logger apt-updater: Failed to add cacophony key; exit 1
-
 logger apt-updater: Waking up the modem
 systemctl restart stay-on
 
@@ -29,7 +23,7 @@ if [[ $rc -eq 0 ]] ; then                # Did ping succeed in end
     logger apt-updater: Updating now
     apt-get update -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d
     logger apt-updater: Upgrading now
-    apt-get upgrade -y
+    apt-get upgrade -y -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d
     logger apt-updater: Update complete
 else
     logger apt-updater: Failed to get internet connection
