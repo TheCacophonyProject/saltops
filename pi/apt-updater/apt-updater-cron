@@ -1,4 +1,4 @@
-#Run update every night at 02:00. By default aapt-updater will wait between 0 and 120 minutes before running the update
-0 02 * * * root /usr/bin/apt-updater
+#Run update every night at 02:30. By default aapt-updater will wait between 0 and 120 minutes before running the update
+30 02 * * * root /usr/bin/apt-updater
 
 #Note cron.d entries need a newline after EACH job including the last one in the file
