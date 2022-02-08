@@ -1,0 +1,31 @@
+#!/bin/bash
+delaytime=$(($RANDOM % 7200))
+
+logger apt-updater: Waiting ${delaytime} secs before updating
+sleep ${delaytime}
+
+logger apt-updater: Waking up the modem
+systemctl restart stay-on
+
+((count = 60))                           # Try 60 pings
+while [[ $count -ne 0 ]] ; do
+    ping -c 1 8.8.8.8                    # Try once.
+    rc=$?
+    if [[ $rc -eq 0 ]] ; then
+        ((count = 1))                    # If okay, flag loop exit.
+    else
+        sleep 10                         # If not delay 10 secs and retry
+    fi
+    ((count = count - 1))                # So we don't go forever.
+done
+
+if [[ $rc -eq 0 ]] ; then                # Did ping succeed in end
+    logger apt-updater: Updating now
+    apt-get update -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d
+    logger apt-updater: Upgrading now
+    apt-get upgrade -y -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d
+    logger apt-updater: Update complete
+else
+    logger apt-updater: Failed to get internet connection
+fi
+systemctl stop stay-on
