@@ -25,7 +25,6 @@ dev:
     - pi/dev-pis
     - pi/salt-updater
     - pi/apt-updater
-    - pi/test-directory
     - pi/removed
     - pi/maybe-reboot
     - pi/end
