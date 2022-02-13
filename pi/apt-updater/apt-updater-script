@@ -1,8 +1,14 @@
 #!/bin/bash
 delaytime=$(($RANDOM % 7200))
 
-logger apt-updater: Waiting ${delaytime} secs before updating
-sleep ${delaytime}
+#check for parameter 'now' for immediate run, otherwise delay
+if [[ "$1" == "now" ]] ; then
+  echo "Immediate upgrade requested"
+else
+  logger apt-updater: Waiting ${delaytime} secs before updating
+  sleep ${delaytime}
+fi
+
 
 logger apt-updater: Waking up the modem
 systemctl restart stay-on
@@ -24,6 +30,20 @@ if [[ $rc -eq 0 ]] ; then                # Did ping succeed in end
     apt-get update -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d
     logger apt-updater: Upgrading now
     apt-get upgrade -y -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d
+    rc=$?
+    if [[ $rc -eq 0 ]] ; then
+      logger apt-updater: Upgrade SUCCESS
+    else
+      logger apt-updater: ERROR: Upgrade FAILED
+      dbus-send --system --type=method_call --print-reply\
+         --dest=org.cacophony.Events /org/cacophony/Events/
+         org.cacophony.Events.Add\
+         string:'{"apt-updater":"apt-get update failed"}'\
+         string:systemError\
+         int64:`date +%s`000000000
+    fi
+
+
     logger apt-updater: Update complete
 else
     logger apt-updater: Failed to get internet connection
