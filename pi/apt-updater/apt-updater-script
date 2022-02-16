@@ -1,4 +1,22 @@
 #!/bin/bash
+check_for_errors () {
+  #syntax: check_for_errors return code "component name" "stderr text"
+  if [[ $1 -eq 0 ]] ; then
+    logger $2: SUCCESS
+  else
+    logger $2: ERROR: FAILED
+    #error messages on single line
+    errors=${3//$'\n'/}
+    #generate event
+    dbus-send --system --type=method_call --print-reply \
+       --dest=org.cacophony.Events /org/cacophony/Events \
+       org.cacophony.Events.Add \
+       string:'{"apt-updater":"$2 : ERROR: FAILED","message":"'"$errors"'"}' \
+       string:systemError \
+       int64:`date +%s`000000000
+  fi
+}
+
 delaytime=$(($RANDOM % 7200))
 
 #check for parameter 'now' for immediate run, otherwise delay
@@ -29,40 +47,12 @@ if [[ $rc -eq 0 ]] ; then                # Did ping succeed in end
     logger apt-updater: Updating now
     #call apt-get update and capture stderr
     errors=`apt-get update -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d  2>&1 > /dev/null`
-    if [[ $rc -eq 0 ]] ; then
-      logger apt-updater: Update SUCCESS
-    else
-      logger apt-updater: ERROR: Update FAILED
-      #error messages on single line
-      errors=${errors//$'\n'/}
-      #generate event
-      dbus-send --system --type=method_call --print-reply \
-         --dest=org.cacophony.Events /org/cacophony/Events \
-         org.cacophony.Events.Add \
-         string:'{"apt-updater":"apt-get update failed","message":"'"$errors"'"}' \
-         string:systemError \
-         int64:`date +%s`000000000
-    fi
+    check_for_errors $? "apt-get update" "${errors}" 
 
     logger apt-updater: Upgrading now
     #call apt-get upgrade and capture stderr
     errors=`apt-get upgrade -y -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d 2>&1 > /dev/null`
-    rc=$?
-    if [[ $rc -eq 0 ]] ; then
-      logger apt-updater: Upgrade SUCCESS
-    else
-      logger apt-updater: ERROR: Upgrade FAILED
-      #error messages on single line
-      errors=${errors//$'\n'/}
-      #generate event
-      dbus-send --system --type=method_call --print-reply \
-         --dest=org.cacophony.Events /org/cacophony/Events \
-         org.cacophony.Events.Add \
-         string:'{"apt-updater":"apt-get upgrade failed","message":"'"$errors"'"}' \
-         string:systemError \
-         int64:`date +%s`000000000
-    fi
-
+    check_for_errors $? "apt-get upgrade" "${errors}" 
 
     logger apt-updater: Update complete
 else
