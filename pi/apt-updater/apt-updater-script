@@ -27,7 +27,8 @@ done
 
 if [[ $rc -eq 0 ]] ; then                # Did ping succeed in end
     logger apt-updater: Updating now
-    errors=`apt-get update -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d`
+    #call apt-get update and capture stderr
+    errors=`apt-get update -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d  2>&1 > /dev/null`
     if [[ $rc -eq 0 ]] ; then
       logger apt-updater: Update SUCCESS
     else
@@ -44,6 +45,7 @@ if [[ $rc -eq 0 ]] ; then                # Did ping succeed in end
     fi
 
     logger apt-updater: Upgrading now
+    #call apt-get upgrade and capture stderr
     errors=`apt-get upgrade -y -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d 2>&1 > /dev/null`
     rc=$?
     if [[ $rc -eq 0 ]] ; then
