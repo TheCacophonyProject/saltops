@@ -46,12 +46,12 @@ done
 if [[ $rc -eq 0 ]] ; then                # Did ping succeed in end
     logger apt-updater: Updating now
     #call apt-get update and capture stderr
-    errors=`apt-get update -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d  2>&1 > /dev/null`
+    errors=`export DEBIAN_FRONTEND=noninteractive; export DEBIAN_PRIORITY=critical; apt-get -qy update -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d  2>&1 > /var/log/apt_last_update.log`
     check_for_errors $? "apt-get update" "${errors}" 
 
     logger apt-updater: Upgrading now
     #call apt-get upgrade and capture stderr
-    errors=`apt-get upgrade -y -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d 2>&1 > /dev/null`
+    errors=`export DEBIAN_FRONTEND=noninteractive; export DEBIAN_PRIORITY=critical; apt-get upgrade -qy -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" 2>&1 >> /var/log/apt_last_update.log`
     check_for_errors $? "apt-get upgrade" "${errors}" 
 
     logger apt-updater: Update complete
