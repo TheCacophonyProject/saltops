@@ -1,0 +1,61 @@
+#!/bin/bash
+check_for_errors () {
+  #syntax: check_for_errors return code "component name" "stderr text"
+  if [[ $1 -eq 0 ]] ; then
+    logger $2: SUCCESS
+  else
+    logger $2: ERROR: FAILED
+    #error messages on single line
+    errors=${3//$'\n'/}
+    #generate event
+    dbus-send --system --type=method_call --print-reply \
+       --dest=org.cacophony.Events /org/cacophony/Events \
+       org.cacophony.Events.Add \
+       string:'{"apt-updater":"'"$2"' : ERROR: FAILED","message":"'"$errors"'"}' \
+       string:systemError \
+       int64:`date +%s`000000000
+  fi
+}
+
+delaytime=$(($RANDOM % 7200))
+
+#check for parameter 'now' for immediate run, otherwise delay
+if [[ "$1" == "now" ]] ; then
+  echo "Immediate upgrade requested"
+else
+  logger apt-updater: Waiting ${delaytime} secs before updating
+  sleep ${delaytime}
+fi
+
+
+logger apt-updater: Waking up the modem
+systemctl restart stay-on
+
+((count = 60))                           # Try 60 pings
+while [[ $count -ne 0 ]] ; do
+    ping -c 1 8.8.8.8                    # Try once.
+    rc=$?
+    if [[ $rc -eq 0 ]] ; then
+        ((count = 1))                    # If okay, flag loop exit.
+    else
+        sleep 10                         # If not delay 10 secs and retry
+    fi
+    ((count = count - 1))                # So we don't go forever.
+done
+
+if [[ $rc -eq 0 ]] ; then                # Did ping succeed in end
+    logger apt-updater: Updating now
+    #call apt-get update and capture stderr
+    errors=`export DEBIAN_FRONTEND=noninteractive; export DEBIAN_PRIORITY=critical; apt-get -qy update -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d  2>&1 > /var/log/apt_last_update.log`
+    check_for_errors $? "apt-get update" "${errors}" 
+
+    logger apt-updater: Upgrading now
+    #call apt-get upgrade and capture stderr
+    errors=`export DEBIAN_FRONTEND=noninteractive; export DEBIAN_PRIORITY=critical; apt-get upgrade -qy -o Dir::Etc::SourceList=/etc/apt/apt-updater-sources.list -o Dir::Etc::SourceParts=/etc/apt/apt-updater-sources.list.d -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" 2>&1 >> /var/log/apt_last_update.log`
+    check_for_errors $? "apt-get upgrade" "${errors}" 
+
+    logger apt-updater: Update complete
+else
+    logger apt-updater: Failed to get internet connection
+fi
+systemctl stop stay-on
