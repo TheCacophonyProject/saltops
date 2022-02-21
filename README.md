@@ -1,5 +1,10 @@
 # saltops
 
+## Testing changes on a RaspberryPi
+- Use `state-apply-test.sh`
+## Testing changes on a Server
+- Use `state-apply-server.sh`
+
 ## Update process.
 ### Updating dev.
 The `dev` branch is updated normally through PRs.

@@ -23,5 +23,6 @@ base:
     - pi/salt-updater
     - pi/removed
     - pi/dev-pis
+    - pi/apt-updater
     - pi/maybe-reboot
     - pi/end
