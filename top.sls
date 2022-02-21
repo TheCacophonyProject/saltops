@@ -78,6 +78,7 @@ test:
     - pi/energy-savings
     - pi/test-pis
     - pi/salt-updater
+    - pi/apt-updater
     - pi/removed
     - pi/maybe-reboot
     - pi/end
