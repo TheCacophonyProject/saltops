@@ -15,6 +15,7 @@ def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True)
     systemd.
     """
 
+    version = version.encode("ascii", 'ignore') # Convert if unicode string to str.
     # Guard against versions being converted to floats in YAML parsing.
     assert isinstance(version, str), "version must be a string"
 
