@@ -140,6 +140,7 @@ prod:
     - pi/energy-savings
     - pi/prod-pis
     - pi/salt-updater
+    - pi/apt-updater
     - pi/removed
     - pi/maybe-reboot
     - pi/end
