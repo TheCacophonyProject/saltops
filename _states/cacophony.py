@@ -16,6 +16,10 @@ def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True)
     """
 
     version = version.encode("ascii", 'ignore') # Convert if unicode string to str.
+    
+    if isinstance(version, bytes): # Convert if byte_encoded (needed for piOS64)
+      version = version.decode('utf-8', 'ignore')
+    
     # Guard against versions being converted to floats in YAML parsing.
     assert isinstance(version, str), "version must be a string"
 
