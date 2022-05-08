@@ -1,8 +1,3 @@
-/usr/bin/uhubctl:
-  file.managed:
-    - source: salt://pi/energy-savings/uhubctl
-    - mode: 755
-
 /usr/bin/energy-savings:
   file.managed:
     - source: salt://pi/energy-savings/energy-savings
