@@ -3,5 +3,4 @@
 echo "turning off HDMI"
 /opt/vc/bin/tvservice --off
 
-echo "turning off ethernet"
-/usr/bin/uhubctl -p 1 -a off
+# USB power will now be controlled by modemd
