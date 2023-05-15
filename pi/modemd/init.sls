@@ -28,3 +28,6 @@ modemd:
     - enable: True
     - watch:
       - modemd-pkg
+      
+dnsutils:
+  pkg.installed
