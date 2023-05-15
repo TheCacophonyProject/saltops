@@ -17,3 +17,6 @@ stay-on-service-reload:
 
 'systemctl restart stay-on':
   cmd.run
+
+'apt-get update':
+  cmd.run
