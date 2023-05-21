@@ -23,7 +23,6 @@ unused.packages:
       - command-not-found-data
       - cryptsetup
       - dh-python
-      - fonts-noto-mono
       - fonts-ubuntu-console
       - fonts-ubuntu-font-family-console
       - fonts-noto-mono
