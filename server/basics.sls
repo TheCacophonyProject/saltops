@@ -10,11 +10,6 @@ python.packages:
 docker.io:
   pkg.installed
 
-/etc/hosts:
-  file.managed:
-    - source: salt://server/hosts.jinja
-    - template: jinja
-
 unused.packages:
   pkg.removed:
     - pkgs:
@@ -23,7 +18,6 @@ unused.packages:
       - command-not-found-data
       - cryptsetup
       - dh-python
-      - fonts-noto-mono
       - fonts-ubuntu-console
       - fonts-ubuntu-font-family-console
       - fonts-noto-mono
