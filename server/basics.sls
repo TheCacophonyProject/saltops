@@ -10,11 +10,6 @@ python.packages:
 docker.io:
   pkg.installed
 
-/etc/hosts:
-  file.managed:
-    - source: salt://server/hosts.jinja
-    - template: jinja
-
 unused.packages:
   pkg.removed:
     - pkgs:
