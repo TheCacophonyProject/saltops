@@ -5,7 +5,6 @@ base:
     - salt-migration
     - server/basics
     - server/unattended-upgrades
-    - server/salt
     - server/users
     - server/sshd
     - server/telegraf
