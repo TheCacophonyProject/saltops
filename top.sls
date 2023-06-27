@@ -24,7 +24,6 @@ dev:
     - pi/energy-savings
     - pi/dev-pis
     - pi/salt-updater
-    - pi/apt-updater
     - pi/removed
     - pi/maybe-reboot
     - pi/end
@@ -77,7 +76,6 @@ test:
     - pi/energy-savings
     - pi/test-pis
     - pi/salt-updater
-    - pi/apt-updater
     - pi/removed
     - pi/maybe-reboot
     - pi/end
@@ -138,7 +136,6 @@ prod:
     - pi/energy-savings
     - pi/prod-pis
     - pi/salt-updater
-    - pi/apt-updater
     - pi/removed
     - pi/maybe-reboot
     - pi/end
