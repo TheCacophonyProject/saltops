@@ -1,0 +1,29 @@
+# Set the maximum (and minimum) frequency of the CPU
+arm_freq=600
+arm_freq_min=600
+
+# Set the maximum (and minimum) frequency of the GPU
+gpu_freq=200
+gpu_freq_min=200
+
+# Enable the I2C interface
+dtparam=i2c_arm=on
+
+# Enable SPI and set GPIO 8 as the CS pin for the SPI interface.
+dtparam=spi=on
+dtoverlay=spi0-1cs,cs0_pin=8
+
+# Disable Bluetooth to free up a UART to program the attiny1616
+dtoverlay=disable-bt
+dtoverlay=pi3-disable-bt
+enable_uart=1
+
+# Enable audio (loads snd_bcm2835)
+#dtparam=audio=on
+
+# Run in 64-bit mode
+arm_64bit=1
+
+# Allocate 16 MB of memory to the GPU. 
+# This leaves more RAM available for the CPU, at the cost of GPU performance.
+gpu_mem=16
