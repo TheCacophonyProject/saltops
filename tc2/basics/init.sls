@@ -15,8 +15,16 @@
     - source: salt://tc2/basics/rsyslog
 
 /boot/cmdline.txt:
-  file.managed:
-    - source: salt://tc2/basics/cmdline.txt
+   file.replace:
+      - pattern: "^(.(?!.*spidev.bufsiz).*)"
+      - repl: "\\1 spidev.bufsiz=65536"
+
+## Remove console output to serial so it can be used instead for programming the ATtiny
+remove_console_from_cmdline:
+  file.replace:
+    - name: /boot/cmdline.txt
+    - pattern: "console=serial0,115200"
+    - repl: ""
 
 i2c-tools:
   pkg.installed: []

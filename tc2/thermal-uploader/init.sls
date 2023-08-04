@@ -9,7 +9,3 @@ thermal-uploader-service:
     - enable: True
     - watch:
       - thermal-uploader-pkg
-
-# Remove files from old thermal-uploader versions
-/opt/cacophony/thermal-uploader:
-  file.absent: []

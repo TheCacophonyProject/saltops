@@ -1,1 +1,0 @@
-console=tty1 root=PARTUUID=d8064be7-02 rootfstype=ext4 fsck.repair=yes rootwait spidev.bufsiz=65536

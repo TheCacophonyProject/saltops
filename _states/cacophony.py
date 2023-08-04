@@ -2,7 +2,7 @@ import os
 import subprocess
 
 
-def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True):
+def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True, architecture="arm"):
     """Install a deb package from a Cacophony Project Github release if it
     isn't installed on the system already. Currently only ARM packages are
     installed.
@@ -35,11 +35,11 @@ def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True)
             "comment": "Version %s already installed." % version,
             "changes": {},
         }
-
-    source_url = "https://github.com/TheCacophonyProject/{name}/releases/download/v{version}/{pkg_name}_{version}_arm.deb".format(
+    source_url = "https://github.com/TheCacophonyProject/{name}/releases/download/v{version}/{pkg_name}_{version}_{architecture}.deb".format(
         name=name,
         pkg_name=pkg_name,
         version=version,
+        architecture=architecture,
     )
     ret = __states__["pkg.installed"](
         name=name,

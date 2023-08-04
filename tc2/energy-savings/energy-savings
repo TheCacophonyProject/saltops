@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Power off HDMI
+/usr/bin/tvservice --off
+
+# USB power will now be controlled by modemd
+echo 0 | sudo tee /sys/devices/platform/soc/3f980000.usb/buspower
