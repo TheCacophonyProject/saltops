@@ -12,3 +12,13 @@
    file.managed:
      - makedirs: True
      - source: salt://tc2/salt-minion/override.conf
+
+/usr/local/bin/check-salt-keys:
+  file.managed:
+    - source: salt://tc2/salt-minion/check-salt-keys
+    - mode: 755
+
+/etc/cron.hourly/check-salt-keys:
+  file.managed:
+    - source: salt://tc2/salt-minion/check-salt-keys.cron
+    - mode: 755

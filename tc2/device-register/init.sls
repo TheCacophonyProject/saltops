@@ -7,9 +7,9 @@ device-register-pkg:
   file.directory
 
 # This will set the prefix to tc2 instead of the default pi
-/etc/systemd/system/device-register.service.d/device-register-overwrite.service:
+/etc/systemd/system/device-register.service.d/overwrite.conf:
   file.managed:
-    - source: salt://tc2/device-register/device-register-overwrite.service
+    - source: salt://tc2/device-register/overwrite.conf
 
 device-register-service:
   service.enabled:

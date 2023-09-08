@@ -1,3 +1,0 @@
-[Service]
-ExecStart=
-ExecStart=/usr/bin/device-register --reboot --prefix=tc2

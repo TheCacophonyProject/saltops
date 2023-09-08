@@ -15,7 +15,7 @@ base:
     - tc2/device-register
     - tc2/salt-updater
     - tc2/maybe-reboot
-    #- tc2/modemd
+    - tc2/modemd
     - tc2/energy-savings
     - tc2/tc2-agent
     - tc2/tc2-hat-controller
