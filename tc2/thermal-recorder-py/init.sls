@@ -8,7 +8,7 @@
 
 /usr/bin/update-thermal-recorder-py-git:
   file.managed:
-    - source: salt://tc2/thermal-recorder-py/update-thermal-py-recorder-git
+    - source: salt://tc2/thermal-recorder-py/update-thermal-recorder-py-git
     - mode: 755
 
 'update-thermal-recorder-py-git':
@@ -18,6 +18,11 @@ thermal-recorder-py-service:
   service.running:
     - name: thermal-recorder-py
     - enable: True
+
+/usr/bin/download-model:
+  file.managed:
+    - source: salt://tc2/thermal-recorder-py/download-model
+    - mode: 755
 
 'download-model v0.1':
   cmd.run

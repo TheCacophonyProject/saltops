@@ -10,6 +10,7 @@ base:
     - tc2/watchdog
     - tc2/event-reporter
     - tc2/thermal-uploader
+    - tc2/thermal-recorder-py
     - tc2/management-interface
     - tc2/device-register
     - tc2/salt-updater

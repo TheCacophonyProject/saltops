@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Set the repository URL and branch name
 repo_url="https://github.com/TheCacophonyProject/classifier-pipeline.git"
 branch_name="pi-classifier"
@@ -25,15 +27,23 @@ if [ ! -d "/home/pi/classifier-pipeline" ]; then
     touch /home/pi/classifier-pipeline/classifier.yaml
 else
     echo "classifier-pipeline already installed, pulling updates from git"
-    # Check if the repository is up-to-date with the specified branch
     cd "/home/pi/classifier-pipeline"
-    git fetch
-    if ! git rev-parse --verify "$branch_name" > /dev/null 2>&1; then
-        # If the branch is not found, checkout the specified branch
+
+    # Get hash of last time pirequirements.txt was updated so we know if it updated.
+    pireq_hash=$(git log -1 --format=%H pirequirements.txt)
+
+    # Get rid of current changes using stash so they can be retrieved if needed.
+    git stash --include-untracked
+
+    # Make sure we are on the correct branch
+    if [[ $(git rev-parse --abbrev-ref HEAD) != "$branch_name" ]]; then
         git checkout "$branch_name"
-    else
-        # If the branch is found, pull the latest changes
-        git pull
     fi
-    # TODO If there were updates then run pip install and things like that again.
+
+    git pull
+
+    new_pireq_hash=$(git log -1 --format=%H pirequirements.txt)
+    if [ "$pireq_hash" != "$new_pireq_hash" ]; then
+        /home/pi/classifier/bin/pip install -r /home/pi/classifier-pipeline/pirequirements.txt
+    fi
 fi

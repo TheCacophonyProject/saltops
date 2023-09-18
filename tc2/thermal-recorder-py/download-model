@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-
 if [ "$#" -ne 1 ]; then
     echo "Usage: download-model <release-version>"
     exit 1
@@ -34,7 +33,7 @@ fi
 if [[ -d "$EXTRACTED_DIR_VERSION" ]]; then
     echo "Files already extracted."
 else 
-    echo "Extracting $TAR_FILENAME_VERSION..."
+    echo "Extracting $TAR_FILENAME_VERSION"
     tar -xf "$TAR_FILENAME_VERSION"
     mv "$EXTRACTED_DIR" "$EXTRACTED_DIR_VERSION"
 fi
@@ -48,13 +47,12 @@ echo "Making link to new model"
 ln -s "$EXTRACTED_DIR_VERSION" "$EXTRACTED_DIR"
 
 echo "Deleting old files"
-old_tar_files="$(find . -name "*_${TAR_FILENAME}" | grep -v $TAR_FILENAME_VERSION)"
+old_tar_files="$(find . -name "*_${TAR_FILENAME}" | sed "/$TAR_FILENAME_VERSION/d")"
 if [[ $old_tar_files != "" ]]; then
-    echo $old_tar_files
     rm $old_tar_files
 fi
-old_extracted_files="$(find . -name "*_${EXTRACTED_DIR}" | grep -v $EXTRACTED_DIR_VERSION)"
+old_extracted_files=$(find . -name "*_${EXTRACTED_DIR}" | sed  "/$EXTRACTED_DIR_VERSION/d")
 if [[ $old_extracted_files != "" ]]; then
-    echo $old_extracted_files
     rm -r $old_extracted_files
 fi
+echo "done"
