@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: download-model <release-version>"
+    exit 1
+fi
+
+cd /home/pi
+VERSION="$1"
+TAR_FILENAME="inc3-19012023-tflite.tar"
+TAR_FILENAME_VERSION="${VERSION}_${TAR_FILENAME}"
+EXTRACTED_DIR="tflite"
+EXTRACTED_DIR_VERSION="${VERSION}_${EXTRACTED_DIR}"
+URL="https://github.com/TheCacophonyProject/AI-Model/releases/download/${VERSION}/${TAR_FILENAME}"
+
+# Check that the files have been extracted and linked already.
+if [[ -d "$EXTRACTED_DIR_VERSION" && "$(readlink "$EXTRACTED_DIR")" == "$EXTRACTED_DIR_VERSION" ]]; then
+    echo "Model already setup for $VERSION"
+    exit 0
+fi
+
+echo "Updating model to $VERSION"
+
+if [[ -f "$TAR_FILENAME_VERSION" ]]; then
+    echo "TAR already downloaded."
+else
+    echo "Downloading $TAR_FILENAME from GitHub..."
+    wget -nv "$URL"
+    mv $TAR_FILENAME $TAR_FILENAME_VERSION
+fi
+
+if [[ -d "$EXTRACTED_DIR_VERSION" ]]; then
+    echo "Files already extracted."
+else 
+    echo "Extracting $TAR_FILENAME_VERSION..."
+    tar -xf "$TAR_FILENAME_VERSION"
+    mv "$EXTRACTED_DIR" "$EXTRACTED_DIR_VERSION"
+fi
+
+if [[ -e "$EXTRACTED_DIR" ]]; then
+    echo "Removing old linked dir.."
+    rm -r "$EXTRACTED_DIR"
+fi
+
+echo "Making link to new model"
+ln -s "$EXTRACTED_DIR_VERSION" "$EXTRACTED_DIR"
+
+echo "Deleting old files"
+old_tar_files="$(find . -name "*_${TAR_FILENAME}" | grep -v $TAR_FILENAME_VERSION)"
+if [[ $old_tar_files != "" ]]; then
+    echo $old_tar_files
+    rm $old_tar_files
+fi
+old_extracted_files="$(find . -name "*_${EXTRACTED_DIR}" | grep -v $EXTRACTED_DIR_VERSION)"
+if [[ $old_extracted_files != "" ]]; then
+    echo $old_extracted_files
+    rm -r $old_extracted_files
+fi
