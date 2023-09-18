@@ -36,3 +36,9 @@ gpu_mem=16
 # - Disabled the wake from GPIO3, so the RP2040 running I2C commands won't wake up the RPi.
 # - Faster and safer power off sequences, rather than the ATtiny waiting a fix amount of time to cut power it knows when it is safe to do so.
 dtoverlay=gpio-poweroff,gpiopin=27,active_low=1
+
+# Set pins for UART multiplexer selector to low so default connection is to ATtiny
+gpio=6,12=ip,pd
+
+# Set SWD pins to input so RP2040 can be programmed externally.
+gpio=25,24=ip
