@@ -39,7 +39,7 @@ dev:
     - tc2/wpa
     - tc2/watchdog
     - tc2/event-reporter
-    - tc2/thermal-recorder
+    - tc2/thermal-recorder-py
     - tc2/thermal-uploader
     - tc2/management-interface
     - tc2/device-register
@@ -114,7 +114,7 @@ test:
     - tc2/wpa
     - tc2/watchdog
     - tc2/event-reporter
-    - tc2/thermal-recorder
+    - tc2/thermal-recorder-py
     - tc2/thermal-uploader
     - tc2/management-interface
     - tc2/device-register
@@ -197,7 +197,7 @@ prod:
     - tc2/wpa
     - tc2/watchdog
     - tc2/event-reporter
-    - tc2/thermal-recorder
+    - tc2/thermal-recorder-py
     - tc2/thermal-uploader
     - tc2/management-interface
     - tc2/device-register
