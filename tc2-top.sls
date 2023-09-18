@@ -9,7 +9,6 @@ base:
     - tc2/wpa
     - tc2/watchdog
     - tc2/event-reporter
-    - tc2/thermal-recorder
     - tc2/thermal-uploader
     - tc2/management-interface
     - tc2/device-register
