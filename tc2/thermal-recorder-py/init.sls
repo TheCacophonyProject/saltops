@@ -1,3 +1,6 @@
+git:
+  pkg.installed: []
+
 /etc/dbus-1/system.d/org.cacophony.thermalrecorder.conf:
    file.managed:
      - source: salt://tc2/thermal-recorder-py/org.cacophony.thermalrecorder.conf
