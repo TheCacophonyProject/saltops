@@ -33,3 +33,20 @@ i2c-tools:
   file.managed:
     - source: salt://tc2/basics/97-cacophony.conf
     -  mode: 644
+
+## Remove program-rp2040 when tc2-agent handels the programming of the chip properly.
+/usr/bin/program-rp2040.sh:
+  file.managed:
+    - source: salt://tc2/basics/program-rp2040.sh
+    - mode: 755
+    - user: root
+    - group: root
+
+/etc/systemd/system/program-rp2040.service:
+  file.managed:
+    - source: salt://tc2/basics/program-rp2040.service
+    - user: root
+    - group: root
+    - mode: 644
+
+## TODO Remove all packages that are not needed.

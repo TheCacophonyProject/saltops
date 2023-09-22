@@ -1,0 +1,10 @@
+[Unit]
+Description=Program Firmware on RP2040 on First Boot
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/program-rp2040.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
