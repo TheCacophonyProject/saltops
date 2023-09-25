@@ -10,6 +10,10 @@ sudo touch /etc/cacophony/config.toml
 sudo rm -r /var/log/*
 sudo journalctl --vacuum-size=1
 
+sudo rm /home/pi/.bash_history
+
+## TODO clean WIFI networks from the SD card
+
 sudo hostnamectl set-hostname tc2-image
 
 sudo systemctl enable program-rp2040
