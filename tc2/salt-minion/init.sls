@@ -1,3 +1,8 @@
+/etc/salt/pki/minion/:
+  file.directory:
+    - mode: 755
+    - makedirs: True
+
 /etc/salt/pki/minion/minion_master.pub:
   file.managed:
     - source: salt://tc2/salt-minion/master.pub
