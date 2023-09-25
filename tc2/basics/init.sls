@@ -34,6 +34,13 @@ i2c-tools:
     - source: salt://tc2/basics/97-cacophony.conf
     -  mode: 644
 
+/usr/bin/new-image-tidy.sh:
+  file.managed:
+    - source: salt://tc2/basics/new-image-tidy.sh
+    - mode: 755
+    - user: root
+    - group: root
+
 ## Remove program-rp2040 when tc2-agent handels the programming of the chip properly.
 /usr/bin/program-rp2040.sh:
   file.managed:
