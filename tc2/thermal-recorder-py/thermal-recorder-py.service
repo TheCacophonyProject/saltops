@@ -1,5 +1,5 @@
 [Unit]
-Description=Cacophony Project Classifier
+Description=Cacophony Project Python Thermal Recorder
 After=multi-user.target
 
 [Service]

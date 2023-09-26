@@ -18,7 +18,7 @@ sudo hostnamectl set-hostname tc2-image
 
 sudo systemctl enable program-rp2040
 
-sudo systemctl disable salt-minion
+sudo systemctl stop salt-minion
 sudo -r /srv/salt/
 sudo rm -r /etc/salt/pki/
 sudo rm /etc/salt/minion_id
