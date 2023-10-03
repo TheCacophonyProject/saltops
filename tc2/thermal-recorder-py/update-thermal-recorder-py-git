@@ -1,0 +1,57 @@
+#!/bin/bash
+
+set -e
+
+# Set the repository URL and branch name
+repo_url="https://github.com/TheCacophonyProject/classifier-pipeline.git"
+branch_name="pi-classifier"
+
+# Check if the branch is not already cloned in the home folder
+if [[ ! -d "/home/pi/classifier-pipeline" ]]; then
+    echo "classifier-pipeline not installed, installing"
+
+    # TODO Check if all of these are needed. 
+    apt-get install -y python3-opencv libglib2.0-dev libgirepository1.0-dev libcairo2 libcairo2-dev python3-dbus git python3-venv gcc pkg-config python3-dev gir1.2-gtk-3.0 libdbus-glib-1-dev libdbus-1-dev ffmpeg
+
+    # Create a virtual environment used for classifier.
+    python3.9 -m venv /home/pi/classifier
+
+    # Clone the repository into the home folder, checking out the specified branch
+    git config --global pull.rebase false
+    git clone --branch "$branch_name" "$repo_url" "/home/pi/classifier-pipeline"
+
+    # Install requirements for pi, this will be using the virtual environment
+    /home/pi/classifier/bin/pip install -r /home/pi/classifier-pipeline/pirequirements.txt
+    
+    # Create config file so classifier doesn't fail.
+    if [[ ! -f "/home/pi/classifier-pipeline/classifier.yaml" ]]; then
+        touch /home/pi/classifier-pipeline/classifier.yaml
+    fi
+else
+    echo "classifier-pipeline already installed, pulling updates from git"
+    cd "/home/pi/classifier-pipeline"
+
+    # Get hash of last time pirequirements.txt was updated so we know if it updated.
+    if git diff --name-only | grep --quiet "^pirequirements.txt$"; then
+        echo "The file pirequirements file has changes."
+        pireq_hash=""
+    else
+        pireq_hash=$(git log -1 --format=%H pirequirements.txt)
+    fi
+
+    # Get rid of current changes using stash so they can be retrieved if needed.
+    git stash --include-untracked
+
+    # Make sure we are on the correct branch
+    if [[ $(git rev-parse --abbrev-ref HEAD) != "$branch_name" ]]; then
+        git checkout "$branch_name"
+    fi
+
+    git pull
+
+    new_pireq_hash=$(git log -1 --format=%H pirequirements.txt)
+    if [[ "$pireq_hash" != "$new_pireq_hash" ]]; then
+        echo "pirequiremnts file update, running pip install"
+        /home/pi/classifier/bin/pip install -r /home/pi/classifier-pipeline/pirequirements.txt
+    fi
+fi
