@@ -1,3 +1,6 @@
+dnsutils:
+  pkg.installed: []
+
 modemd-pkg:
   cacophony.pkg_installed_from_github:
     - name: modemd
