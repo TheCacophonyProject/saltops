@@ -14,6 +14,9 @@ sudo rm /home/pi/.bash_history
 
 ## TODO clean WIFI networks from the SD card
 
+sudo systemctl stop event-reporter
+sudo rm /var/lib/event-reporter.db
+
 sudo hostnamectl set-hostname tc2-image
 
 sudo systemctl enable program-rp2040
