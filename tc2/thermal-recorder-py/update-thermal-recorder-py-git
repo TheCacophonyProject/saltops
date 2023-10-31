@@ -5,6 +5,7 @@ set -e
 # Set the repository URL and branch name
 repo_url="https://github.com/TheCacophonyProject/classifier-pipeline.git"
 branch_name="pi-classifier"
+remote=origin
 
 # Check if the branch is not already cloned in the home folder
 if [[ ! -d "/home/pi/classifier-pipeline" ]]; then
@@ -27,31 +28,38 @@ if [[ ! -d "/home/pi/classifier-pipeline" ]]; then
     if [[ ! -f "/home/pi/classifier-pipeline/classifier.yaml" ]]; then
         touch /home/pi/classifier-pipeline/classifier.yaml
     fi
+
+    cd "/home/pi/classifier-pipeline"
+    git config user.email "tc2@email.com"
+    git config user.name "TC2"
+
 else
     echo "classifier-pipeline already installed, pulling updates from git"
     cd "/home/pi/classifier-pipeline"
 
-    # Get hash of last time pirequirements.txt was updated so we know if it updated.
-    if git diff --name-only | grep --quiet "^pirequirements.txt$"; then
-        echo "The file pirequirements file has changes."
-        pireq_hash=""
+    # Get hash before update
+    if [[ -f "pirequirements.txt" ]]; then
+        pireq_hash_before=$(sha256sum pirequirements.txt | awk '{ print $1 }')
     else
-        pireq_hash=$(git log -1 --format=%H pirequirements.txt)
+        pireq_hash_before=""
     fi
 
     # Get rid of current changes using stash so they can be retrieved if needed.
     git stash --include-untracked
 
-    # Make sure we are on the correct branch
-    if [[ $(git rev-parse --abbrev-ref HEAD) != "$branch_name" ]]; then
-        git checkout "$branch_name"
+    git fetch $remote
+    git reset --hard $remote/"$branch_name"
+
+    # Get hash after update
+    if [[ -f "pirequirements.txt" ]]; then
+        pireq_hash_after=$(sha256sum pirequirements.txt | awk '{ print $1 }')
+    else
+        pireq_hash_after=""
     fi
 
-    git pull
-
-    new_pireq_hash=$(git log -1 --format=%H pirequirements.txt)
-    if [[ "$pireq_hash" != "$new_pireq_hash" ]]; then
-        echo "pirequiremnts file update, running pip install"
+    # Check if pirequirements.txt has changed
+    if [[ "$pireq_hash_before" != "$pireq_hash_after" ]]; then
+        echo "pirequirements.txt file changed, running pip install"
         /home/pi/classifier/bin/pip install -r /home/pi/classifier-pipeline/pirequirements.txt
     fi
 fi
