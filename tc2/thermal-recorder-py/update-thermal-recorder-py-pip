@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+# Check if the branch is not already cloned in the home folder
+if ! [ pip list | grep "classifier-pipeline"]; then
+    echo "classifier-pipeline not installed, installing"
+
+    # TODO Check if all of these are needed.
+    apt-get install -y python3-opencv libglib2.0-dev libgirepository1.0-dev libcairo2 libcairo2-dev python3-dbus python3-venv gcc pkg-config python3-dev gir1.2-gtk-3.0 libdbus-glib-1-dev libdbus-1-dev ffmpeg
+
+    # Create a virtual environment used for classifier.
+    python3.10 -m venv /home/pi/classifier
+
+    pip install classifier-pipeline
+else
+  pip install classifier-pipeline --upgrade
+fi
