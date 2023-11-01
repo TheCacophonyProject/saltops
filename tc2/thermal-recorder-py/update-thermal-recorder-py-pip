@@ -9,7 +9,7 @@ if ! [ pip list | grep "classifier-pipeline"]; then
     apt-get install -y python3-opencv libglib2.0-dev libgirepository1.0-dev libcairo2 libcairo2-dev python3-dbus python3-venv gcc pkg-config python3-dev gir1.2-gtk-3.0 libdbus-glib-1-dev libdbus-1-dev ffmpeg
 
     # Create a virtual environment used for classifier.
-    python3.10 -m venv /home/pi/classifier
+    python3.9 -m venv /home/pi/classifier
 
     pip install classifier-pipeline
 else
