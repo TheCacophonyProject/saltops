@@ -13,7 +13,7 @@ if [ -d "/home/pi/classifier" ]; then
   fi
 fi
 if /home/pi/.venv/classifier/bin/python3 -c "import piclassifier" 2>/dev/null; then
-  /home/pi/.venv/classifier/bin/pip install classifier-pipeline --upgrade
+  /home/pi/.venv/classifier/bin/python3 -m pip install classifier-pipeline --upgrade
 else
   echo "classifier-pipeline not installed, installing"
   # TODO Check if all of these are needed.
@@ -23,5 +23,5 @@ else
   if [ ! -d "/home/pi/.venv/classifier" ]; then
     python3.9 -m venv /home/pi/.venv/classifier
   fi
-  /home/pi/.venv/classifier/bin/pip install classifier-pipeline
+  /home/pi/.venv/classifier/bin/python3 -m pip install classifier-pipeline
 fi
