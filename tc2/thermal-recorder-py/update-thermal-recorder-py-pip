@@ -1,17 +1,27 @@
 #!/bin/bash
 
 set -e
-# Check if the branch is not already cloned in the home folder
-if ! [ pip list | grep "classifier-pipeline"]; then
-    echo "classifier-pipeline not installed, installing"
-    mkdir -p /home/pi/.venv
-    # TODO Check if all of these are needed.
-    apt-get install -y python3-opencv libglib2.0-dev libgirepository1.0-dev libcairo2 libcairo2-dev python3-dbus python3-venv gcc pkg-config python3-dev gir1.2-gtk-3.0 libdbus-glib-1-dev libdbus-1-dev ffmpeg
-
-    # Create a virtual environment used for classifier.
-    python3.9 -m venv /home/pi/.venv/classifier
-
-    /home/pi/.venv/classifier/bin/pip install classifier-pipeline
-else
+if [ -d "/home/pi/classifier-pipeline" ]; then
+  echo "removing old git dir"
+  rm -r "/home/pi/classifier-pipeline"
+fi
+if [ -d "/home/pi/classifier" ]; then
+  mkdir -p /home/pi/.venv
+  if [ ! -d "/home/pi/.venv/classifier" ]; then
+    echo "Moving classifier to .venv dir"
+    mv "/home/pi/classifier" "/home/pi/.venv/"
+  fi
+fi
+if /home/pi/.venv/classifier/bin/python3 -c "import piclassifier" 2>/dev/null; then
   /home/pi/.venv/classifier/bin/pip install classifier-pipeline --upgrade
+else
+  echo "classifier-pipeline not installed, installing"
+  # TODO Check if all of these are needed.
+  apt-get install -y python3-opencv libglib2.0-dev libgirepository1.0-dev libcairo2 libcairo2-dev python3-dbus python3-venv gcc pkg-config python3-dev gir1.2-gtk-3.0 libdbus-glib-1-dev libdbus-1-dev ffmpeg
+
+  # Create a virtual environment used for classifier.
+  if [ ! -d "/home/pi/.venv/classifier" ]; then
+    python3.9 -m venv /home/pi/.venv/classifier
+  fi
+  /home/pi/.venv/classifier/bin/pip install classifier-pipeline
 fi
