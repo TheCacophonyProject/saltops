@@ -14,6 +14,8 @@ if [ -d "/home/pi/classifier" ]; then
 fi
 if /home/pi/.venv/classifier/bin/python3 -c "import piclassifier" 2>/dev/null; then
   /home/pi/.venv/classifier/bin/python3 -m pip install classifier-pipeline --upgrade
+  # should check if actually updated
+  systemctl restart thermal-recorder-py.service
 else
   echo "classifier-pipeline not installed, installing"
   # TODO Check if all of these are needed.
