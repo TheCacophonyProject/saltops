@@ -9,12 +9,12 @@ git:
    file.managed:
      - source: salt://tc2/thermal-recorder-py/thermal-recorder-py.service
 
-/usr/bin/update-thermal-recorder-py-git:
+/usr/bin/update-thermal-recorder-py-pip:
   file.managed:
-    - source: salt://tc2/thermal-recorder-py/update-thermal-recorder-py-git
+    - source: salt://tc2/thermal-recorder-py/update-thermal-recorder-py-pip
     - mode: 755
 
-'update-thermal-recorder-py-git':
+'update-thermal-recorder-py-pip':
   cmd.run
 
 thermal-recorder-py-service:

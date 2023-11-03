@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/home/pi/classifier-pipeline/piclassifier/run-classifier.sh
+ExecStart=/home/pi/.venv/classifier/bin/pi_classify
 Restart=always
 RestartSec=3s
 
