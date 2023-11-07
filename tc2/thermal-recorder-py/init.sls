@@ -27,5 +27,5 @@ thermal-recorder-py-service:
     - source: salt://tc2/thermal-recorder-py/download-model
     - mode: 755
 
-'download-model v0.1':
+'download-model v0.3':
   cmd.run
