@@ -22,6 +22,11 @@ thermal-recorder-py-service:
     - name: thermal-recorder-py
     - enable: True
 
+thermal-recorder-service:
+  service.dead:
+    - name: thermal-recorder
+    - enable: False
+
 /usr/bin/download-model:
   file.managed:
     - source: salt://tc2/thermal-recorder-py/download-model
