@@ -57,3 +57,14 @@ i2c-tools:
     - mode: 644
 
 ## TODO Remove all packages that are not needed.
+
+## Disable automatic updates.
+disable_apt_daily_timer:
+  service.dead:
+    - name: apt-daily.timer
+    - enable: False
+
+disable_apt_daily_upgrade_timer:
+  service.dead:
+    - name: apt-daily-upgrade.timer
+    - enable: False
