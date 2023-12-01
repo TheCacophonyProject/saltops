@@ -4,7 +4,7 @@ dnsutils:
 modemd-pkg:
   cacophony.pkg_installed_from_github:
     - name: modemd
-    - version: "1.7.3-tc2"
+    - version: "1.7.5-tc2"
 
 modemd:
   service.running:

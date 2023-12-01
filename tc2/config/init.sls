@@ -4,5 +4,5 @@
 cacophony-config-pkg:
   cacophony.pkg_installed_from_github:
     - name: go-config
-    - version: "1.8.1"
+    - version: "1.9.2"
     - pkg_name: cacophony-config
