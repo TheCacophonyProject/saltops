@@ -28,3 +28,5 @@ ssh-service:
     - watch:
       - prevent-root-ssh-login
       - prevent-password-logins
+
+#    - password: "$y$j9T$yxfG/hMbzScOh2LZnczGZ0$mrRuhPl/e9gVH6iigqpmfPHRTaRJHQJ/f9PK0Tzp.D1"
