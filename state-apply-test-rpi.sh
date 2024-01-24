@@ -3,6 +3,9 @@
 # Usage: state-apply-test.sh [devicename] [state.apply params]
 # If you need to make changes to rpi-top.sls make the changes in `salt/top.sls` This is what is used when testing
 
+
+set -e
+
 device=$1
 params=$2
 
@@ -13,7 +16,7 @@ fi
 
 # copy files to local folder
 cp -r basics.sls _modules/ pi/ _states/ salt-migration/ timezone.sls salt/
-cp salt/rpi-top.sls salt/top.sls
+cp rpi-top.sls salt/top.sls
 
 ssh pi@$device "sudo rm -rf salt /srv/salt"
 
