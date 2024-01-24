@@ -1,7 +1,7 @@
 tc2-agent-pkg:
   cacophony.pkg_installed_from_github:
     - name: tc2-agent
-    - version: "0.1.6"
+    - version: "0.1.7"
     - architecture: "armhf"
 
 tc2-agnet-service:
