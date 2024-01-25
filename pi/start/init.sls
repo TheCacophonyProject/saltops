@@ -18,5 +18,9 @@ stay-on-service-reload:
 'systemctl restart stay-on':
   cmd.run
 
+/etc/apt/sources.list:
+  file.managed:
+    - source: salt://pi/start/source.list
+
 'apt-get update':
   cmd.run
