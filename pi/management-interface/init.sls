@@ -25,12 +25,10 @@ hostapd:
 sudo_rfkill_unblock_wlan:
   cmd.run:
     - name: sudo rfkill unblock wlan
-    - unless: rfkill list wlan | grep -q 'Soft blocked: no'
 
 sudo_umask_hostapd:
   cmd.run:
     - name: sudo systemctl unmask hostapd
-    - onlyif: systemctl list-unit-files --state=masked | grep -q 'hostapd.service'
     
 /etc/default/hostapd:
   file.append:
