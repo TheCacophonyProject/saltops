@@ -27,3 +27,8 @@ ensure_bushnet_ssid_with_cap:
             priority=2
         }
     - append_if_not_found: true
+
+/etc/wpa_supplicant/wpa_supplicant_default.conf:
+  file.managed:
+    - source: salt://tc2/wpa/wpa_supplicant_default.conf
+    -  mode: 644

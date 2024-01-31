@@ -2,26 +2,26 @@
 
 # Script to tidy up the SD card to make it ready for making a new SD card image.
 
-sudo rm -r /var/spool/cptv/*
+rm -r /var/spool/cptv/*
 
-sudo rm /etc/cacophony/config.toml
-sudo touch /etc/cacophony/config.toml
+rm /etc/cacophony/config.toml
+touch /etc/cacophony/config.toml
 
-sudo rm -r /var/log/*
-sudo journalctl --vacuum-size=1
+rm -r /var/log/*
+journalctl --vacuum-size=1
 
-sudo rm /home/pi/.bash_history
+rm /home/pi/.bash_history
 
-## TODO clean WIFI networks from the SD card
+cp /etc/wpa_supplicant/wpa_supplicant{_default,}.conf
 
-sudo systemctl stop event-reporter
-sudo rm /var/lib/event-reporter.db
+systemctl stop event-reporter
+rm /var/lib/event-reporter.db
 
-sudo hostnamectl set-hostname tc2-image
+hostnamectl set-hostname tc2-image
 
-sudo systemctl enable program-rp2040
+systemctl enable program-rp2040
 
-sudo systemctl stop salt-minion
-sudo -r /srv/salt/
-sudo rm -r /etc/salt/pki/
-sudo rm /etc/salt/minion_id
+systemctl stop salt-minion
+-r /srv/salt/
+rm -r /etc/salt/pki/
+rm /etc/salt/minion_id
