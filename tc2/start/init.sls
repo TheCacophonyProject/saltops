@@ -20,3 +20,6 @@ stay-on-service-reload:
 
 'apt-get update':
   cmd.run
+
+'apt-get upgrade -y':
+  cmd.run
