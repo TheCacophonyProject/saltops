@@ -1,6 +1,7 @@
 base:
   '*':
     - tc2/start
+    - tc2/dev
     - timezone
     - tc2/config
     - tc2/basics

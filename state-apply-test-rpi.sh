@@ -3,7 +3,6 @@
 # Usage: state-apply-test.sh [devicename] [state.apply params]
 # If you need to make changes to rpi-top.sls make the changes in `salt/top.sls` This is what is used when testing
 
-
 set -e
 
 device=$1
