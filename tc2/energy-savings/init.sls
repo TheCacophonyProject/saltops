@@ -21,8 +21,8 @@ energy-savings-service:
     - watch:
       - energy-savings-daemon-reload
 
-/etc/systemd/system/basic.target.wants/hdmi-off.service:
-   file.absent
+#/etc/systemd/system/basic.target.wants/hdmi-off.service:
+#   file.absent
 
-/etc/systemd/system/hdmi-off.service:
-   file.absent
+#/etc/systemd/system/hdmi-off.service:
+#   file.absent

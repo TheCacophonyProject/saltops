@@ -43,7 +43,6 @@ def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True,
     )
     ret = __states__["pkg.installed"](
         name=name,
-        version=version,
         sources=[{pkg_name: source_url}],
         refresh=False,
     )

@@ -3,9 +3,8 @@ reboot_after_boot_changes:
     - name: system.reboot
     - at_time: 1
     - onchanges:
-      - /boot/config.txt
-      - /boot/cmdline.txt
-      - /etc/modules
+      - /boot/firmware/config.txt
+      - /boot/firmware/cmdline.txt
 
 reboot_for_config_import:
   module.run:

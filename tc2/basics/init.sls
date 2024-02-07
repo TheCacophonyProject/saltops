@@ -1,10 +1,10 @@
-/boot/config.txt:
+/boot/firmware/config.txt:
    file.managed:
      - source: salt://tc2/basics/config.txt
 
-/etc/modules:
+/etc/modules-load.d/i2c-module:
    file.managed:
-     - source: salt://tc2/basics/modules
+     - source: salt://tc2/basics/i2c-module
 
 /etc/rsyslog.conf:
    file.managed:
@@ -14,7 +14,7 @@
   file.managed:
     - source: salt://tc2/basics/rsyslog
 
-/boot/cmdline.txt:
+/boot/firmware/cmdline.txt:
    file.replace:
       - pattern: "^(.(?!.*spidev.bufsiz).*)"
       - repl: "\\1 spidev.bufsiz=65536"

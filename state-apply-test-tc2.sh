@@ -39,7 +39,7 @@ ssh pi@$device "sudo cp -r salt /srv/"
 echo "done"
 
 #echo "Sync salt, this updates the _modules files."
-#ssh -t pi@$device "sudo salt-call --local saltutil.sync_all"
+ssh -t pi@$device "sudo salt-call --local saltutil.sync_all"
 
 cmd="ssh -t pi@$device \"sudo salt-call --local state.apply $params --state-output=changes\""
 echo "running $cmd"
