@@ -3,6 +3,7 @@ id=bushnet
 uuid=4596c521-7cf5-4563-bd5f-aba20b0688ca
 type=wifi
 interface-name=wlan0
+autoconnect-priority=10
 
 [wifi]
 mode=infrastructure
