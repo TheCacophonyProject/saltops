@@ -15,9 +15,11 @@ psk=feathers
 
 [ipv4]
 method=auto
+route-metric=10
 
 [ipv6]
 addr-gen-mode=default
 method=auto
+route-metric=10
 
 [proxy]

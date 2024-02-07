@@ -12,7 +12,8 @@ journalctl --vacuum-size=1
 
 rm /home/pi/.bash_history
 
-#cp /etc/wpa_supplicant/wpa_supplicant{_default,}.conf
+# Remove all NM connections apart from bushnet
+find /etc/NetworkManager/system-connections/ -maxdepth 1 -type f ! -name 'bushnet.nmconnection' -exec rm {} +
 
 systemctl stop event-reporter
 rm /var/lib/event-reporter.db
