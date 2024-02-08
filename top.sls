@@ -42,6 +42,7 @@ dev:
     - tc2/event-reporter
     - tc2/thermal-uploader
     - tc2/thermal-recorder-py
+    - tc2/rpi-net-manager
     - tc2/management-interface
     - tc2/device-register
     - tc2/salt-updater
@@ -118,6 +119,7 @@ test:
     - tc2/event-reporter
     - tc2/thermal-uploader
     - tc2/thermal-recorder-py
+    - tc2/rpi-net-manager
     - tc2/management-interface
     - tc2/device-register
     - tc2/salt-updater
@@ -202,6 +204,7 @@ prod:
     - tc2/event-reporter
     - tc2/thermal-uploader
     - tc2/thermal-recorder-py
+    - tc2/rpi-net-manager
     - tc2/management-interface
     - tc2/device-register
     - tc2/salt-updater
