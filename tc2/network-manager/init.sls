@@ -3,6 +3,11 @@
     - source: salt://tc2/network-manager/bushnet.nmconnection
     -  mode: 600
 
+/etc/NetworkManager/system-connections/Bushnet.nmconnection:
+  file.managed:
+    - source: salt://tc2/network-manager/Bushnet.nmconnection
+    -  mode: 600
+
 # For debugging you can disable the modemd service and then connect direclty to the RPi ethernet from your laptop.
 /etc/network/interfaces.d/eth0:
   file.managed:
