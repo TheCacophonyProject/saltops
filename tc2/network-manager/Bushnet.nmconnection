@@ -1,6 +1,6 @@
 [connection]
 id=Bushnet
-uuid=4596c521-7cf5-4563-bd5f-aba20b0688ca
+uuid=03e814f9-d545-47de-beff-08d203b432c7
 type=wifi
 interface-name=wlan0
 autoconnect-priority=10
