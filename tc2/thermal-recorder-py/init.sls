@@ -14,8 +14,8 @@ git:
     - source: salt://tc2/thermal-recorder-py/update-thermal-recorder-py-pip
     - mode: 755
 
-'update-thermal-recorder-py-pip':
-  cmd.run
+#'update-thermal-recorder-py-pip':
+#  cmd.run
 
 thermal-recorder-py-service:
   service.running:

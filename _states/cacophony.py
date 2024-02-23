@@ -26,8 +26,7 @@ def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True,
 
     if pkg_name == None:
         pkg_name = name
-
-    installed_version = __salt__["pkg.version"](pkg_name)
+    installed_version = __salt__["pkg.version"](pkg_name).replace("~", "-") # pkg.version returns '~' instead of '-' in packages versions
     if installed_version == version:
         return {
             "name": pkg_name,

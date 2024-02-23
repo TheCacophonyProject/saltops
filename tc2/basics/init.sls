@@ -1,30 +1,34 @@
 /boot/firmware/config.txt:
    file.managed:
      - source: salt://tc2/basics/config.txt
+     - parallel: True
 
 /etc/modules-load.d/i2c-module:
    file.managed:
      - source: salt://tc2/basics/i2c-module
+     - parallel: True
 
-/etc/rsyslog.conf:
+
+/etc/systemd/journald.conf:
    file.managed:
-     - source: salt://tc2/basics/rsyslog.conf
+     - source: salt://tc2/basics/journald.conf
+     - parallel: True
 
-/etc/logrotate.d/rsyslog:
-  file.managed:
-    - source: salt://tc2/basics/rsyslog
+#/etc/rsyslog.conf:
+#   file.managed:
+#     - source: salt://tc2/basics/rsyslog.conf
+#     - parallel: True
+
+#/etc/logrotate.d/rsyslog:
+#  file.managed:
+#    - source: salt://tc2/basics/rsyslog
+#    - parallel: True
 
 /boot/firmware/cmdline.txt:
    file.replace:
       - pattern: "^(.(?!.*spidev.bufsiz).*)"
       - repl: "\\1 spidev.bufsiz=65536"
-
-## Remove console output to serial so it can be used instead for programming the ATtiny
-remove_console_from_cmdline:
-  file.replace:
-    - name: /boot/cmdline.txt
-    - pattern: "console=serial0,115200"
-    - repl: ""
+      - parallel: True
 
 i2c-tools:
   pkg.installed: []
@@ -33,6 +37,7 @@ i2c-tools:
   file.managed:
     - source: salt://tc2/basics/97-cacophony.conf
     -  mode: 644
+    - parallel: True
 
 /usr/bin/new-image-tidy.sh:
   file.managed:
@@ -40,21 +45,7 @@ i2c-tools:
     - mode: 755
     - user: root
     - group: root
-
-## Remove program-rp2040 when tc2-agent handels the programming of the chip properly.
-/usr/bin/program-rp2040.sh:
-  file.managed:
-    - source: salt://tc2/basics/program-rp2040.sh
-    - mode: 755
-    - user: root
-    - group: root
-
-/etc/systemd/system/program-rp2040.service:
-  file.managed:
-    - source: salt://tc2/basics/program-rp2040.service
-    - user: root
-    - group: root
-    - mode: 644
+    - parallel: True
 
 ## TODO Remove all packages that are not needed.
 
@@ -63,8 +54,10 @@ disable_apt_daily_timer:
   service.dead:
     - name: apt-daily.timer
     - enable: False
+    - parallel: True
 
 disable_apt_daily_upgrade_timer:
   service.dead:
     - name: apt-daily-upgrade.timer
     - enable: False
+    - parallel: True

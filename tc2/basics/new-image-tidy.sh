@@ -20,8 +20,6 @@ rm /var/lib/event-reporter.db
 
 hostnamectl set-hostname tc2-image
 
-systemctl enable program-rp2040
-
 systemctl stop salt-minion
 rm -r /srv/salt/
 rm -r /etc/salt/pki/
