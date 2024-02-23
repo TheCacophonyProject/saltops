@@ -12,7 +12,8 @@ default_locale:
     - require:
       - locale: nz_locale
 
+# RTC managed by tc2-hat-controller now
 # Set RTC in local TZ to false
-'timedatectl set-local-rtc 0':
-  cmd.run:
-    - unless: 'timedatectl | grep -q "RTC in local TZ: no"'
+#'timedatectl set-local-rtc 0':
+#  cmd.run:
+#    - unless: 'timedatectl | grep -q "RTC in local TZ: no"'
