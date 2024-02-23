@@ -18,8 +18,9 @@ stay-on-service-reload:
 'systemctl restart stay-on':
   cmd.run
 
-'apt-get update':
-  cmd.run
+# Disable apt update and upgrade until apt sources are managed.
+#'apt-get update':
+#  cmd.run
 
-'apt-get upgrade -y':
-  cmd.run
+#'apt-get upgrade -y':
+#  cmd.run
