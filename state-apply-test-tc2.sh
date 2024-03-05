@@ -5,15 +5,48 @@
 
 set -e
 
+# Function to display help text
+show_help() {
+cat << EOF
+Usage: ${0##*/} [--skip-modules] <device> [salt-params]
+
+This script is to help testing salt changes on a Raspberry Pi for the TC2 camera.
+
+Options:
+  --update-modules  Update salt modules. Use this if modifying files in the _modules folder.
+  -h, --help        Display this help and exit.
+EOF
+}
+
+update_modules=0
+
+# Process all options starting with '--'
+while [[ "$1" == --* ]]; do
+    case "$1" in
+        --update-modules)
+            update_modules=1
+            ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        *)  echo "Unknown option: $1" >&2
+            exit 1
+            ;;
+    esac
+    shift # Move to next argument
+done
+
 device=$1
 params=$2
 
-set -e
-
 if [[ -z $device ]]; then
-  echo "please provide device name. Usage \`state-apply-test-tc2.sh [devicename] [state.apply params]\`"
+  echo "No device name provided"
+  show_help
   exit 1
 fi
+
+echo "Running salt update on $device"
 
 if [[ -e salt ]]; then
   rm -r salt 
@@ -38,8 +71,10 @@ echo "moving files to /srv"
 ssh pi@$device "sudo cp -r salt /srv/"
 echo "done"
 
-#echo "Sync salt, this updates the _modules files."
-ssh -t pi@$device "sudo salt-call --local saltutil.sync_all"
+if [[ $update_modules -eq 1 ]]; then
+  echo "Syncing salt modules.."
+  ssh pi@$device "sudo salt-call --local saltutil.sync_all"
+fi
 
 cmd="ssh -t pi@$device \"sudo salt-call --local state.apply $params --state-output=changes\""
 echo "running $cmd"
