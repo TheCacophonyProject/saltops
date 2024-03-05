@@ -10,5 +10,8 @@ salt-updater-pkg:
 salt-updater:
   service.running:
     - enable: True
-    - watch:
-      - salt-updater-pkg
+    # Don't include the watch section as that will tell salt to restart the service if the packages updates. 
+    # Not what we want because this package is running the update itself. Service will restart when the camera is restarted.
+    # //TOOD Find solution for 24/7 cameras
+    #- watch:
+    #  - salt-updater-pkg
