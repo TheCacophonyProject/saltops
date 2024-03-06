@@ -1,7 +1,7 @@
 rpi-net-manager-pkg:
   cacophony.pkg_installed_from_github:
     - name: rpi-net-manager
-    - version: "0.5.1"
+    - version: "0.5.2"
     - architecture: "arm64"
 
 rpi-net-manager-service:
