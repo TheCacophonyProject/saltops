@@ -18,6 +18,10 @@ stay-on-service-reload:
 'systemctl restart stay-on':
   cmd.run
 
+# Sometimes dpkg can get in a bad state, this should fix it.
+'dpkg --configure -a':
+  cmd.run
+
 # Disable apt update and upgrade until apt sources are managed.
 #'apt-get update':
 #  cmd.run
