@@ -2,7 +2,91 @@ import os
 import subprocess
 
 
-def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True, architecture="arm"):
+def run_command(cmd, timeout=None):
+    proc = subprocess.run(
+        cmd,
+        shell=True,
+        encoding="ascii",
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=timeout,
+    )
+    return proc.stdout
+
+
+def pkg_installed_from_pypi(
+    name, version, pkg_name=None, venv=None, systemd_reload=True
+):
+    """Install a pip package from a PYPI release
+
+    pkg_name
+        Name of the deb package if it is different to the github repository name.
+
+    If a new version is installed, systemd will be asked to reload it's
+    configuration so that any new service files in the package are known to
+    systemd.
+    """
+    if isinstance(version, bytes):  # Convert if byte_encoded (needed for piOS64)
+        version = version.decode("utf-8", "ignore")
+
+    if not isinstance(version, str):  # Convert if unicode string to str.
+        version = version.encode("ascii", "ignore")
+
+    # Guard against versions being converted to floats in YAML parsing.
+    assert isinstance(version, str), "version must be a string"
+
+    if pkg_name == None:
+        pkg_name = name
+    if venv is None:
+        python_path = "python3"
+    else:
+        python_path = f"{venv}/python3"
+
+    version_cmd = "import importlib.metadata; print(importlib.metadata.version('classifier-pipeline'))"
+    try:
+        installed_version = run_command(f'{python_path} -c "{version_cmd}"')
+    except Exception as e:
+        return {
+            "name": pkg_name,
+            "result": False,
+            "comment": f"Error running {version_cmd} : {e} ",
+            "changes": {},
+        }
+    installed_version = installed_version.strip()
+    if installed_version == version:
+        return {
+            "name": pkg_name,
+            "result": True,
+            "comment": "Version %s already installed." % version,
+            "changes": {},
+        }
+
+    update_cmd = f"{python_path} -m pip install {pkg_name}=={version}"
+    try:
+        update = run_command(update_cmd)
+    except Exception as e:
+        return {
+            "name": pkg_name,
+            "result": False,
+            "comment": f"Error updating {pkg_name} to {version} running {update_cmd} : {e} ",
+            "changes": {},
+        }
+
+    ret = __states__["pip.installed"](
+        name=name,
+        refresh=False,
+    )
+    if systemd_reload and ret["result"] and ret["changes"] and not __opts__["test"]:
+        __salt__["cmd.run"]("systemctl daemon-reload")
+        ret["comment"] += " (systemd reloaded)"
+
+    return ret
+
+
+def pkg_installed_from_github(
+    name, version, pkg_name=None, systemd_reload=True, architecture="arm"
+):
     """Install a deb package from a Cacophony Project Github release if it
     isn't installed on the system already. Currently only ARM packages are
     installed.
@@ -15,18 +99,20 @@ def pkg_installed_from_github(name, version, pkg_name=None, systemd_reload=True,
     systemd.
     """
 
-    if isinstance(version, bytes): # Convert if byte_encoded (needed for piOS64)
-      version = version.decode('utf-8', 'ignore')
-    
-    if not isinstance(version, str): # Convert if unicode string to str.
-      version = version.encode("ascii", 'ignore') 
-     
+    if isinstance(version, bytes):  # Convert if byte_encoded (needed for piOS64)
+        version = version.decode("utf-8", "ignore")
+
+    if not isinstance(version, str):  # Convert if unicode string to str.
+        version = version.encode("ascii", "ignore")
+
     # Guard against versions being converted to floats in YAML parsing.
     assert isinstance(version, str), "version must be a string"
 
     if pkg_name == None:
         pkg_name = name
-    installed_version = __salt__["pkg.version"](pkg_name).replace("~", "-") # pkg.version returns '~' instead of '-' in packages versions
+    installed_version = __salt__["pkg.version"](pkg_name).replace(
+        "~", "-"
+    )  # pkg.version returns '~' instead of '-' in packages versions
     if installed_version == version:
         return {
             "name": pkg_name,

@@ -9,13 +9,40 @@ git:
    file.managed:
      - source: salt://tc2/thermal-recorder-py/thermal-recorder-py.service
 
-/usr/bin/update-thermal-recorder-py-pip:
-  file.managed:
-    - source: salt://tc2/thermal-recorder-py/update-thermal-recorder-py-pip
-    - mode: 755
+classifier-eqs:
+  pkg.installed:
+    - pkgs:
+      - python3-opencv
+      - libglib2.0-dev
+      - libgirepository1.0-dev
+      - libcairo2
+      - libcairo2-dev
+      - python3-dbus
+      - python3-venv
+      - gcc
+      - pkg-config
+      - python3-dev
+      - gir1.2-gtk-3.0
+      - libdbus-glib-1-dev
+      - libdbus-1-dev
+      - ffmpeg
 
-'update-thermal-recorder-py-pip':
-  cmd.run
+venv:
+  pip.installed:
+    - name: virtualenv
+
+
+classifier-env:
+  virtualenv.managed:
+    - name:  /home/pi/.venv/classifier
+    - system_site_packages: True
+
+
+classifier-pipeline-pip:
+  cacophony.pkg_installed_from_pypi:
+    - name: classifier-pipeline
+    - version: "0.0.8"
+    - venv: /home/pi/.venv/classifier/bin/
 
 thermal-recorder-py-service:
   service.running:
