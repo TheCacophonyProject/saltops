@@ -32,13 +32,12 @@ classifier-eqs:
 classifier-env:
   virtualenv.managed:
     - name:  /home/pi/.venv/classifier
-    - system_site_packages: True
 
 
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
     - name: classifier-pipeline
-    - version: "0.0.8"
+    - version: "0.0.9"
     - venv: /home/pi/.venv/classifier/bin/
 
 thermal-recorder-py-service:

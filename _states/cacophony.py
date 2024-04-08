@@ -2,18 +2,6 @@ import os
 import subprocess
 
 
-def run_command(cmd, timeout=None):
-    proc = subprocess.run(
-        cmd,
-        shell=True,
-        encoding="ascii",
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        timeout=timeout,
-    )
-    return proc.stdout
-
 
 def pkg_installed_from_pypi(
     name, version, pkg_name=None, venv=None, systemd_reload=True
@@ -38,6 +26,7 @@ def pkg_installed_from_pypi(
 
     if pkg_name == None:
         pkg_name = name
+
     if venv is None:
         python_path = "python3"
     else:
@@ -45,12 +34,10 @@ def pkg_installed_from_pypi(
 
     version_cmd = "import importlib.metadata; print(importlib.metadata.version('classifier-pipeline'))"
     try:
-        installed_version = run_command(f'{python_path} -c "{version_cmd}"')
-    except Exception as e:
-        # assume not installed
-        installed_version =""
-
-    installed_version = installed_version.strip()
+        installed_version = __salt__["cmd.run"](f"{python_path} -c \"{version_cmd}\"")
+        installed_version = installed_version.strip()
+    except:
+        installed_version = None
     if installed_version == version:
         return {
             "name": pkg_name,
@@ -58,22 +45,18 @@ def pkg_installed_from_pypi(
             "comment": "Version %s already installed." % version,
             "changes": {},
         }
-
-    update_cmd = f"{python_path} -m pip install {pkg_name}=={version}"
-    try:
-        update = run_command(update_cmd)
-    except Exception as e:
-        return {
-            "name": pkg_name,
-            "result": False,
-            "comment": f"Error updating {pkg_name} to {version} running {update_cmd} : {e} ",
-            "changes": {},
-        }
+    
+    if venv is None:
+        pip_path = "pip3"
+    else:
+        pip_path = f"{venv}/pip3"
 
     ret = __states__["pip.installed"](
-        name=name,
+        name=f" {pkg_name}=={version}",
+        bin_env = pip_path,
         refresh=False,
     )
+
     if systemd_reload and ret["result"] and ret["changes"] and not __opts__["test"]:
         __salt__["cmd.run"]("systemctl daemon-reload")
         ret["comment"] += " (systemd reloaded)"
