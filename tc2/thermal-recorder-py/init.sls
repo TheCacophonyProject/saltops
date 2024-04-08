@@ -26,11 +26,8 @@ classifier-eqs:
       - libdbus-glib-1-dev
       - libdbus-1-dev
       - ffmpeg
-
-venv:
-  pip.installed:
-    - name: virtualenv
-
+      - python3-virtualenv
+    
 
 classifier-env:
   virtualenv.managed:

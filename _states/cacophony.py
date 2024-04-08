@@ -47,12 +47,9 @@ def pkg_installed_from_pypi(
     try:
         installed_version = run_command(f'{python_path} -c "{version_cmd}"')
     except Exception as e:
-        return {
-            "name": pkg_name,
-            "result": False,
-            "comment": f"Error running {version_cmd} : {e} ",
-            "changes": {},
-        }
+        # assume not installed
+        installed_version =""
+
     installed_version = installed_version.strip()
     if installed_version == version:
         return {
