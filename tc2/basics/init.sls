@@ -43,3 +43,21 @@ disable_apt_daily_upgrade_timer:
   service.dead:
     - name: apt-daily-upgrade.timer
     - enable: False
+
+
+manage_swapfile:
+  file.managed:
+    - name: /etc/dphys-swapfile
+    - source: salt://tc2/basics/dphys-swapfile
+    - mode: 0644
+    - user: root
+    - group: root
+
+restart_swap_service:
+  cmd.run:
+    - name: |
+        /sbin/dphys-swapfile swapoff
+        /sbin/dphys-swapfile setup
+        /sbin/dphys-swapfile swapon
+    - onchanges:
+      - file: manage_swapfile
