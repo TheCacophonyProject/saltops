@@ -1,7 +1,7 @@
 management-interface-pkg:
   cacophony.pkg_installed_from_github:
     - name: management-interface
-    - version: "1.23.6-tc2"
+    - version: "1.23.7-tc2"
 
 managementd-service:
   service.running:
