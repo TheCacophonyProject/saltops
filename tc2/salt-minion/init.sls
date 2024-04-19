@@ -1,6 +1,6 @@
 /etc/salt/pki/minion/:
   file.directory:
-    - mode: 755
+    - mode: 700
     - makedirs: True
 
 /etc/salt/pki/minion/minion_master.pub:
@@ -27,3 +27,7 @@
   file.managed:
     - source: salt://tc2/salt-minion/check-salt-keys.cron
     - mode: 755
+
+salt-minion:
+  service.running:
+    - enable: True

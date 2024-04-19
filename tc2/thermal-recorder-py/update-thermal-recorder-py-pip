@@ -23,7 +23,7 @@ else
 
   # Create a virtual environment used for classifier.
   if [ ! -d "/home/pi/.venv/classifier" ]; then
-    python3.9 -m venv /home/pi/.venv/classifier
+    python -m venv /home/pi/.venv/classifier
   fi
   /home/pi/.venv/classifier/bin/python3 -m pip install classifier-pipeline
 fi
