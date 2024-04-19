@@ -5,10 +5,13 @@
 salt-updater-pkg:
   cacophony.pkg_installed_from_github:
     - name: salt-updater
-    - version: "0.5.0"
+    - version: "0.6.1"
 
 salt-updater:
   service.running:
     - enable: True
-    - watch:
-      - salt-updater-pkg
+    # Don't include the watch section as that will tell salt to restart the service if the packages updates. 
+    # Not what we want because this package is running the update itself. Service will restart when the camera is restarted.
+    # //TOOD Find solution for 24/7 cameras
+    #- watch:
+    #  - salt-updater-pkg

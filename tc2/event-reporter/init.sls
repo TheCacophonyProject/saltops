@@ -1,7 +1,7 @@
 event-reporter-pkg:
   cacophony.pkg_installed_from_github:
     - name: event-reporter
-    - version: "3.6.0"
+    - version: "3.6.1"
 
 event-reporter-service:
   service.running:

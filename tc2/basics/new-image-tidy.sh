@@ -2,26 +2,28 @@
 
 # Script to tidy up the SD card to make it ready for making a new SD card image.
 
-sudo rm -r /var/spool/cptv/*
+rm -r /var/spool/cptv/*
 
-sudo rm /etc/cacophony/config.toml
-sudo touch /etc/cacophony/config.toml
+rm /etc/cacophony/config.toml
+touch /etc/cacophony/config.toml
 
-sudo rm -r /var/log/*
-sudo journalctl --vacuum-size=1
+# Set location to Chch, this is so tc2-agent can run.
+sudo cacophony-config -w location.latitude=-43.5333 location.longitude=172.6333
 
-sudo rm /home/pi/.bash_history
+rm -r /var/log/*
+journalctl --vacuum-size=1
 
-## TODO clean WIFI networks from the SD card
+rm /home/pi/.bash_history
 
-sudo systemctl stop event-reporter
-sudo rm /var/lib/event-reporter.db
+# Remove all NM connections apart from bushnet
+find /etc/NetworkManager/system-connections/ -maxdepth 1 -type f ! -name 'bushnet.nmconnection' -exec rm {} +
 
-sudo hostnamectl set-hostname tc2-image
+systemctl stop event-reporter
+rm /var/lib/event-reporter.db
 
-sudo systemctl enable program-rp2040
+hostnamectl set-hostname tc2-image
 
-sudo systemctl stop salt-minion
-sudo -r /srv/salt/
-sudo rm -r /etc/salt/pki/
-sudo rm /etc/salt/minion_id
+systemctl stop salt-minion
+rm -r /srv/salt/
+rm -r /etc/salt/pki/
+rm /etc/salt/minion_id

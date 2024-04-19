@@ -1,30 +1,20 @@
-/boot/config.txt:
+/boot/firmware/config.txt:
    file.managed:
      - source: salt://tc2/basics/config.txt
 
-/etc/modules:
+/etc/modules-load.d/i2c-module:
    file.managed:
-     - source: salt://tc2/basics/modules
+     - source: salt://tc2/basics/i2c-module
 
-/etc/rsyslog.conf:
+
+/etc/systemd/journald.conf:
    file.managed:
-     - source: salt://tc2/basics/rsyslog.conf
+     - source: salt://tc2/basics/journald.conf
 
-/etc/logrotate.d/rsyslog:
-  file.managed:
-    - source: salt://tc2/basics/rsyslog
-
-/boot/cmdline.txt:
+/boot/firmware/cmdline.txt:
    file.replace:
       - pattern: "^(.(?!.*spidev.bufsiz).*)"
       - repl: "\\1 spidev.bufsiz=65536"
-
-## Remove console output to serial so it can be used instead for programming the ATtiny
-remove_console_from_cmdline:
-  file.replace:
-    - name: /boot/cmdline.txt
-    - pattern: "console=serial0,115200"
-    - repl: ""
 
 i2c-tools:
   pkg.installed: []
@@ -41,21 +31,6 @@ i2c-tools:
     - user: root
     - group: root
 
-## Remove program-rp2040 when tc2-agent handels the programming of the chip properly.
-/usr/bin/program-rp2040.sh:
-  file.managed:
-    - source: salt://tc2/basics/program-rp2040.sh
-    - mode: 755
-    - user: root
-    - group: root
-
-/etc/systemd/system/program-rp2040.service:
-  file.managed:
-    - source: salt://tc2/basics/program-rp2040.service
-    - user: root
-    - group: root
-    - mode: 644
-
 ## TODO Remove all packages that are not needed.
 
 ## Disable automatic updates.
@@ -68,3 +43,21 @@ disable_apt_daily_upgrade_timer:
   service.dead:
     - name: apt-daily-upgrade.timer
     - enable: False
+
+
+manage_swapfile:
+  file.managed:
+    - name: /etc/dphys-swapfile
+    - source: salt://tc2/basics/dphys-swapfile
+    - mode: 0644
+    - user: root
+    - group: root
+
+restart_swap_service:
+  cmd.run:
+    - name: |
+        /sbin/dphys-swapfile swapoff
+        /sbin/dphys-swapfile setup
+        /sbin/dphys-swapfile swapon
+    - onchanges:
+      - file: manage_swapfile

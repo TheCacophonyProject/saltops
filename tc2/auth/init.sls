@@ -1,7 +1,7 @@
 set-pi-password:
   user.present:
     - name: pi
-    - password: "$6$u.LDU80e$fFiSnuvLeAXpPpTYlY5EVy4N/HSRsaHg4nf0IYKZVutXjjyEXaIPlc0Zxj/O/RE2QqztmoKsd4IHVg2KM6OQD."
+    - password: "$y$j9T$yxfG/hMbzScOh2LZnczGZ0$mrRuhPl/e9gVH6iigqpmfPHRTaRJHQJ/f9PK0Tzp.D1"
 
 prevent-root-ssh-login:
   file.append:
