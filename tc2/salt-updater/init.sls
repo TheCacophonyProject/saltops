@@ -5,7 +5,7 @@
 salt-updater-pkg:
   cacophony.pkg_installed_from_github:
     - name: salt-updater
-    - version: "0.6.1"
+    - version: "0.7.0"
 
 salt-updater:
   service.running:
