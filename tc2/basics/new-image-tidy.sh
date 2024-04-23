@@ -7,6 +7,9 @@ rm -r /var/spool/cptv/*
 rm /etc/cacophony/config.toml
 touch /etc/cacophony/config.toml
 
+# Set location to Chch, this is so tc2-agent can run.
+sudo cacophony-config -w location.latitude=-43.5333 location.longitude=172.6333
+
 rm -r /var/log/*
 journalctl --vacuum-size=1
 
