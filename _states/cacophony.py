@@ -2,7 +2,6 @@ import os
 import subprocess
 
 
-
 def pkg_installed_from_pypi(
     name, version, pkg_name=None, venv=None, systemd_reload=True
 ):
@@ -15,26 +14,25 @@ def pkg_installed_from_pypi(
     configuration so that any new service files in the package are known to
     systemd.
     """
-    if isinstance(version, bytes):  # Convert if byte_encoded (needed for piOS64)
-        version = version.decode("utf-8", "ignore")
-
-    if not isinstance(version, str):  # Convert if unicode string to str.
+    if isinstance(version, str):  # Convert if unicode string to str.
         version = version.encode("ascii", "ignore")
 
     # Guard against versions being converted to floats in YAML parsing.
     assert isinstance(version, str), "version must be a string"
 
-    if pkg_name == None:
+    if pkg_name is None:
         pkg_name = name
 
     if venv is None:
-        python_path = "python3"
+        python_path = "python"
     else:
-        python_path = f"{venv}/python3"
+        python_path = "{}/python".format(venv)
 
-    version_cmd = "import importlib.metadata; print(importlib.metadata.version('classifier-pipeline'))"
+    version_cmd = "from pip._vendor import pkg_resources; print(pkg_resources.get_distribution('classifier-pipeline').version)"
     try:
-        installed_version = __salt__["cmd.run"](f"{python_path} -c \"{version_cmd}\"")
+        installed_version = __salt__["cmd.run"](
+            '{} -c "{}"'.format(python_path, version_cmd)
+        )
         installed_version = installed_version.strip()
     except:
         installed_version = None
@@ -45,15 +43,15 @@ def pkg_installed_from_pypi(
             "comment": "Version %s already installed." % version,
             "changes": {},
         }
-    
+
     if venv is None:
-        pip_path = "pip3"
+        pip_path = "pip"
     else:
-        pip_path = f"{venv}/pip3"
+        pip_path = "{}/pip".format(venv)
 
     ret = __states__["pip.installed"](
-        name=f" {pkg_name}=={version}",
-        bin_env = pip_path,
+        name=" {}=={}".format(pkg_name, version),
+        bin_env=pip_path,
         refresh=False,
     )
 
@@ -79,16 +77,13 @@ def pkg_installed_from_github(
     systemd.
     """
 
-    if isinstance(version, bytes):  # Convert if byte_encoded (needed for piOS64)
-        version = version.decode("utf-8", "ignore")
-
-    if not isinstance(version, str):  # Convert if unicode string to str.
+    if isinstance(version, str):  # Convert if unicode string to str.
         version = version.encode("ascii", "ignore")
 
     # Guard against versions being converted to floats in YAML parsing.
     assert isinstance(version, str), "version must be a string"
 
-    if pkg_name == None:
+    if pkg_name is None:
         pkg_name = name
     installed_version = __salt__["pkg.version"](pkg_name).replace(
         "~", "-"
@@ -169,7 +164,7 @@ def _remove_if_present(name):
 
 
 def _play_silence():
-    "Play 100ms of silence and return True if this succeeeded"
+    "Play 100ms of silence and return True if this succeeded"
     exit_code = subprocess.call(
         "sox -n -t wav - trim 0.0 0.100 | play -q -", shell=True
     )
