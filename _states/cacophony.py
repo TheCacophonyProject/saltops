@@ -31,7 +31,7 @@ def pkg_installed_from_pypi(
     else:
         python_path = "{}/python".format(venv)
 
-    version_cmd = "from pip._vendor import pkg_resources; print(pkg_resources.get_distribution('classifier-pipeline').version)"
+    version_cmd = "import importlib.metadata; print(importlib.metadata.version('classifier-pipeline'))"
     try:
         installed_version = __salt__["cmd.run"](
             '{} -c "{}"'.format(python_path, version_cmd)
@@ -80,7 +80,10 @@ def pkg_installed_from_github(
     systemd.
     """
 
-    if isinstance(version, str):  # Convert if unicode string to str.
+    if isinstance(version, bytes):  # Convert if byte_encoded (needed for piOS64)
+        version = version.decode("utf-8", "ignore")
+
+    if not isinstance(version, str):  # Convert if unicode string to str.
         version = version.encode("ascii", "ignore")
 
     # Guard against versions being converted to floats in YAML parsing.
