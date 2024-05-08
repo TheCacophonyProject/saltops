@@ -14,7 +14,10 @@ def pkg_installed_from_pypi(
     configuration so that any new service files in the package are known to
     systemd.
     """
-    if isinstance(version, str):  # Convert if unicode string to str.
+    if isinstance(version, bytes):  # Convert if byte_encoded (needed for piOS64)
+        version = version.decode("utf-8", "ignore")
+
+    if not isinstance(version, str):  # Convert if unicode string to str.
         version = version.encode("ascii", "ignore")
 
     # Guard against versions being converted to floats in YAML parsing.
