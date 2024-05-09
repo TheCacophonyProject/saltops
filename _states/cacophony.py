@@ -57,6 +57,7 @@ def pkg_installed_from_pypi(
         bin_env=pip_path,
         refresh=False,
     )
+    ret["changes"] = {pkg_name: {"old": installed_version, "new": version}}
 
     if systemd_reload and ret["result"] and ret["changes"] and not __opts__["test"]:
         __salt__["cmd.run"]("systemctl daemon-reload")
