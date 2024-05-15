@@ -58,9 +58,7 @@ mkdir salt
 cp -r basics.sls _modules/ tc2/ _states/ salt-migration/ timezone.sls salt/
 cp tc2-top.sls salt/top.sls
 
-eval $(ssh-agent) && ssh-add ~/.ssh/cacophony-pi
-
-ssh -i ~/.ssh/cacophony-pi pi@$device "sudo rm -rf salt /srv/salt"
+ssh pi@$device "sudo rm -rf salt /srv/salt"
 
 # copy onto device
 echo "copying files to device.."
@@ -68,17 +66,17 @@ scp -rq salt pi@$device:
 echo "done"
 
 echo "Deleting old salt files.."
-ssh -i ~/.ssh/cacophony-pi pi@$device "sudo rm -r /srv/salt 2>/dev/null || true"
+ssh pi@$device "sudo rm -r /srv/salt 2>/dev/null || true"
 
 echo "moving files to /srv"
-ssh -i ~/.ssh/cacophony-pi pi@$device "sudo cp -r salt /srv/"
+ssh pi@$device "sudo cp -r salt /srv/"
 echo "done"
 
 if [[ $update_modules -eq 1 ]]; then
 	echo "Syncing salt modules.."
-	ssh -i ~/.ssh/cacophony-pi pi@$device "sudo salt-call --local saltutil.sync_all"
+	ssh pi@$device "sudo salt-call --local saltutil.sync_all"
 fi
 
-cmd="ssh -i ~/.ssh/cacophony-pi -t pi@$device \"sudo salt-call --local state.apply $params --state-output=changes\""
+cmd="ssh -t pi@$device \"sudo salt-call --local state.apply $params --state-output=changes\""
 echo "running $cmd"
 eval $cmd

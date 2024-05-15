@@ -17,19 +17,17 @@ fi
 cp -r basics.sls _modules/ pi/ _states/ salt-migration/ timezone.sls salt/
 cp rpi-top.sls salt/top.sls
 
-eval $(ssh-agent) && ssh-add ~/.ssh/cacophony-pi
-
-ssh -i ~/.ssh/cacophony-pi pi@$device "sudo rm -rf salt /srv/salt"
+ssh pi@$device "sudo rm -rf salt /srv/salt"
 
 # copy onto device
 echo "copying files to device.."
-scp -i ~/.ssh/cacophony-pi -rq salt pi@$device:
+scp -rq salt pi@$device:
 echo "done"
 
 echo "moving files to /srv"
-ssh -i ~/.ssh/cacophony-pi pi@$device "sudo cp -r salt /srv/"
+ssh pi@$device "sudo cp -r salt /srv/"
 echo "done"
-ssh -i ~/.ssh/cacophony-pi pi@$device "sudo salt-call --local saltutil.sync_all"
+
 cmd="ssh -t pi@$device \"sudo salt-call --local state.apply $params --state-output=changes\""
 echo "running $cmd"
 eval $cmd
