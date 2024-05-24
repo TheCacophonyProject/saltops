@@ -9,8 +9,8 @@ device=$1
 params=$2
 
 if [[ -z $device ]]; then
-  echo "please provide device name. Usage \`state-apply-test.sh [devicename] [state.apply params]\`"
-  exit 1
+	echo "please provide device name. Usage \`state-apply-test.sh [devicename] [state.apply params]\`"
+	exit 1
 fi
 
 # copy files to local folder
