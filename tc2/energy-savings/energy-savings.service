@@ -1,0 +1,9 @@
+[Unit]
+Description=Run energy savings script
+
+[Service]
+ExecStart=/usr/bin/energy-savings
+Type=oneshot
+
+[Install]
+WantedBy=basic.target

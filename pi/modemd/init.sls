@@ -21,7 +21,7 @@
 modemd-pkg:
   cacophony.pkg_installed_from_github:
     - name: modemd
-    - version: "1.4.1"
+    - version: "1.5.1"
 
 modemd:
   service.running:

@@ -1,0 +1,8 @@
+[Unit]
+Description=Run script to send stay-on requests to modemd and attiny`
+
+[Service]
+ExecStart=/usr/bin/stay-on
+
+[Install]
+WantedBy=basic.target

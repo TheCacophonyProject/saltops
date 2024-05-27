@@ -3,6 +3,8 @@
 # Usage: state-apply-test-server.sh [server]
 # If you need to make changes to server-top.sls make the changes in `salt/top.sls` This is what is used when testing
 
+set -e
+
 server=$1
 
 if [[ -z $server ]]; then
