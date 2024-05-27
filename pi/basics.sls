@@ -31,6 +31,4 @@ default-hw-rev:
 {% endif %}
 
 /etc/sysctl.d/97-cacophony.conf:
-  file.managed:
-    - source: salt://pi/97-cacophony.conf
-    -  mode: 644
+  file.absent: []
