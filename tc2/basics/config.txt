@@ -28,6 +28,12 @@ arm_64bit=1
 # This leaves more RAM available for the CPU, at the cost of GPU performance.
 gpu_mem=16
 
+# Disable LEDs
+dtparam=act_led_trigger=none
+dtparam=act_led_activelow=off
+dtparam=pwr_led_trigger=none
+dtparam=pwr_led_activelow=off
+
 # Sets a pin low when the RPi has finished shutting down. The ATtiny will need to power off the 5V after this triggers,
 # failure to do so results in a kernel BUG, increased power consumption and undefined behaviour.
 # An unwanted behaviour is that when running a reboot command on the RPi it won't be able to reboot properly.
