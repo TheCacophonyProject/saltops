@@ -24,7 +24,7 @@ tc2-hat-rtc-service:
     - name: tc2-hat-rtc
     - enable: True
 
-tc2-hat-uart-service:
-  service.running:
-    - name: tc2-hat-uart
-    - enable: True
+#tc2-hat-uart-service:
+#  service.running:
+#    - name: tc2-hat-uart
+#    - enable: True
