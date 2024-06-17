@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# Script to tidy up the SD card to make it ready for making a new SD card image.
+# Check if the script is running as root
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
 
+# Script to tidy up the SD card to make it ready for making a new SD card image.
 rm -r /var/spool/cptv/*
 
 rm /etc/cacophony/config.toml
@@ -27,3 +32,5 @@ systemctl stop salt-minion
 rm -r /srv/salt/
 rm -r /etc/salt/pki/
 rm /etc/salt/minion_id
+
+date +"%Y-%m-%d %H:%M:%S" > /etc/cacophony/image-datetime
