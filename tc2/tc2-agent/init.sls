@@ -3,6 +3,7 @@ tc2-agent-pkg:
     - name: tc2-agent
     - version: "0.1.22"
     - architecture: "armhf"
+    - branch: "main"
 
 tc2-agnet-service:
   service.running:
