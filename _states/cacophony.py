@@ -3,7 +3,7 @@ import subprocess
 
 
 def pkg_installed_from_pypi(
-    name, version, pkg_name=None, venv=None, systemd_reload=True
+    name, version, pkg_name=None, venv=None, systemd_reload=True, branch=None
 ):
     """Install a pip package from a PYPI release
 

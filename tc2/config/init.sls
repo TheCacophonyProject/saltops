@@ -6,3 +6,4 @@ cacophony-config-pkg:
     - name: go-config
     - version: "1.9.4"
     - pkg_name: cacophony-config
+    - branch: master

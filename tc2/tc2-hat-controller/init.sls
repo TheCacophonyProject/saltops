@@ -3,6 +3,7 @@ tc2-hat-controller-pkg:
     - name: tc2-hat-controller
     - version: "0.7.0"
     - architecture: "arm64"
+    - branch: "main"
 
 tc2-hat-attiny-service:
   service.running:
