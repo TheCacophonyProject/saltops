@@ -100,9 +100,8 @@ def main():
     headers = {"Authorization": f"token {token}"}
     #headers = {}
     sls_files = find_sls_files("./tc2")
-    print(f"Found {len(sls_files)} sls files in ./tc2")
     repo_info = extract_repos_from_sls(sls_files)
-    print(f"Found {len(repo_info)} repos in {len(sls_files)} sls files")
+    print(f"Found {len(repo_info)} repos")
     
 
     for repo in repo_info:
@@ -120,7 +119,7 @@ def main():
             # Check that the latest release is up to date
             is_up_to_date = check_release_up_to_date(repo_url, headers, branch)
             if not is_up_to_date:
-                print(f"\tlatest release is not up to date with branch '{branch}'. Make a new release.")
+                print(f"\tlatest release is not up to date with branch '{branch}'. Make a new release if needed.")
                 continue
             
             # Check that the latest release is what is in the .sls file.
