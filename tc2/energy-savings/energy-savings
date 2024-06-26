@@ -1,7 +1,15 @@
 #!/bin/bash
 
-# Power off HDMI
-/usr/bin/tvservice --off
+# Get the Raspberry Pi model and filter out null bytes
+MODEL=$(cat /proc/device-tree/model | tr -d '\0')
 
-# USB power will now be controlled by modemd
-#echo 0 | sudo tee /sys/devices/platform/soc/3f980000.usb/buspower
+if [[ "$MODEL" == *"Raspberry Pi Zero"* ]]; then
+    # If it is a Raspberry Pi Zero
+    echo 1 | sudo tee /sys/class/leds/ACT/brightness > /dev/null
+elif [[ "$MODEL" == *"Raspberry Pi 3"* ]]; then
+    # If it is a Raspberry Pi 3
+    echo 0 | sudo tee /sys/class/leds/ACT/brightness > /dev/null
+    echo 0 | sudo tee /sys/devices/platform/soc/3f980000.usb/buspower > /dev/null
+else
+    echo "Unsupported Raspberry Pi model."
+fi

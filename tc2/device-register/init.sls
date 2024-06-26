@@ -2,6 +2,7 @@ device-register-pkg:
   cacophony.pkg_installed_from_github:
     - name: device-register
     - version: "1.5.2"
+    - branch: master
 
 /etc/systemd/system/device-register.service.d:
   file.directory
