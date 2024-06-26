@@ -3,7 +3,7 @@ import subprocess
 
 
 def pkg_installed_from_pypi(
-    name, version, pkg_name=None, venv=None, systemd_reload=True
+    name, version, pkg_name=None, venv=None, systemd_reload=True, branch=None
 ):
     """Install a pip package from a PYPI release
 
@@ -67,7 +67,7 @@ def pkg_installed_from_pypi(
 
 
 def pkg_installed_from_github(
-    name, version, pkg_name=None, systemd_reload=True, architecture="arm"
+    name, version, pkg_name=None, systemd_reload=True, architecture="arm", branch=None
 ):
     """Install a deb package from a Cacophony Project Github release if it
     isn't installed on the system already. Currently only ARM packages are
