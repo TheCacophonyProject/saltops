@@ -1,7 +1,7 @@
 thermal-uploader-pkg:
   cacophony.pkg_installed_from_github:
     - name: thermal-uploader
-    - version: "2.6.1"
+    - version: "2.6.2"
     - branch: master
 
 thermal-uploader-service:
