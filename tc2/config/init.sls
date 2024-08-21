@@ -6,6 +6,7 @@ cacophony-config-pkg:
     - name: go-config
     - version: "1.20.1"
     - pkg_name: cacophony-config
+    - branch: master
 
 cacophony-config-sync-service:
   service.running:
