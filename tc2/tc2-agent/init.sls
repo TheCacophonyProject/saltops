@@ -1,7 +1,7 @@
 tc2-agent-pkg:
   cacophony.pkg_installed_from_github:
     - name: tc2-agent
-    - version: "0.2.8"
+    - version: "0.3.10"
     - architecture: "arm64"
     - branch: "main"
 
