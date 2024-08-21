@@ -10,7 +10,7 @@ stop_modem_manager:
 modemd-pkg:
   cacophony.pkg_installed_from_github:
     - name: modemd
-    - version: "1.9.1-tc2"
+    - version: "1.10.0-tc2"
     - branch: "tc2"
 
 modemd:
