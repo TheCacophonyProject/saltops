@@ -111,30 +111,8 @@ const versionsAreEqual = (prev, next) => {
   if ((prevVersionData && !versionsAreEqual(prevVersionData, versionData)) || !prevVersionData) {
     versionData.updated = new Date().toISOString();
     console.log("version info updated", JSON.stringify(versionData, null, '\t'));
-    fs.writeFileSync("./salt-version-info.json", JSON.stringify(versionData, null, '\t'));
-
     if (repo === "TheCacophonyProject/saltops") {
-      {
-        const {stderr, stdout} = await exec("git config user.name cacophony-bot");
-        console.log("1:", stderr, stdout);
-      }
-      {
-        const {stderr, stdout} = await exec("git config user.email bot@cacophony.org.nz");
-        console.log("2:", stderr, stdout);
-      }
-      {
-        const {stderr, stdout} = await exec("git add .");
-        console.log("3:", stderr, stdout);
-      }
-      {
-        const {stderr, stdout} = await exec("git commit -m \"updated version information\"");
-        console.log("4:", stderr, stdout);
-      }
-      {
-        console.log("Pushing");
-        const {stderr, stdout} = await exec("git push --force");
-        console.log("5:", stderr, stdout);
-      }
+      fs.writeFileSync("./salt-version-info.json", JSON.stringify(versionData, null, '\t'));
     }
   } else {
     console.log("version information unchanged");
