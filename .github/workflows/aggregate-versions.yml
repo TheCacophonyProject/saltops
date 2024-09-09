@@ -9,13 +9,25 @@ jobs:
   aggregate-version-info:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           path: dev
           ref: dev
+      - uses: actions/checkout@v4
+        with:
+          path: prod
+          ref: prod
+      - uses: actions/checkout@v4
+        with:
+          path: test
+          ref: test
+      - uses: actions/checkout@v4
+        with:
+          repository: TheCacophonyProject/salt-version-info
+          path: salt-version-info
       - uses: actions/setup-node@v2.1.2
         with:
-          node-version: 12.x
+          node-version: 20.x
       - shell: bash
         run: |
           cd dev/.github/workflows

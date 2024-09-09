@@ -8,13 +8,16 @@ const args = process.argv;
 const repo = args[2];
 
 const getFilesWithExtension = (path, ext) => {
+  console.log(process.cwd());
+  console.log(fs.readdirSync(path));
   const items = fs.readdirSync(path)
-      .filter(item => (
-          !item.startsWith(".") &&
-          !item.startsWith("_") &&
-          (item.endsWith(`.${ext}`) || fs.lstatSync(`${path}/${item}`).isDirectory())
-      ))
-      .map(item => ({ name: item, isDir: fs.lstatSync(`${path}/${item}`).isDirectory() }));
+    .filter(item => (
+      !item.startsWith(".") &&
+      !item.startsWith("_") &&
+      (item.endsWith(`.${ext}`) || fs.lstatSync(`${path}/${item}`).isDirectory())
+    ))
+    .map(item => ({ name: item, isDir: fs.lstatSync(`${path}/${item}`).isDirectory() }));
+
   let files = [];
   for (const item of items) {
     if (item.isDir) {
@@ -23,6 +26,7 @@ const getFilesWithExtension = (path, ext) => {
       files.push(`${path}/${item.name}`);
     }
   }
+  console.log(files);
   return files;
 }
 const findKeyInObject = (obj, key) => {
@@ -38,77 +42,78 @@ const findKeyInObject = (obj, key) => {
   }
   return false;
 }
-const formatDate = date => {
-  const dateString = date.toLocaleString("en-NZ", {timeZone: "Pacific/Auckland"});
-  // Node on github actions only has US localization, so we need to swap day and month:
-  const firstPart = dateString.split(",")[0];
-  const pieces = firstPart.split("/");
-  return `${pieces[1]}/${pieces[0]}/${pieces[2]},${dateString.split(',')[1]}`;
-}
-
+const branches = ["prod", "test", "dev"];
+const models = ["pi", "tc2"];
+const versionsAreEqual = (prev, next) => {
+  for (const branch of branches) {
+    if (!prev[branch] || !next[branch]) {
+      return false;
+    }
+    for (const model of models) {
+      for (const softwarePackage of Object.keys(prev[branch][model])) {
+        if (!next[branch][model][softwarePackage]) {
+          return false;
+        }
+        if (next[branch][model][softwarePackage] !== prev[branch][model][softwarePackage]) {
+          return false;
+        }
+      }
+      for (const softwarePackage of Object.keys(next[branch][model])) {
+        if (!prev[branch][model][softwarePackage]) {
+          return false;
+        }
+        if (next[branch][model][softwarePackage] !== prev[branch][model][softwarePackage]) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+};
 (async function () {
   const versionData = {};
-  const now = new Date();
-  const separator = "____\n";
-  let versionOutput = "";
-
+  console.log(process.cwd());
   process.chdir("../../../");
-  // For each branch:
-  const branches = ["prod", "test", "dev"];
-  const releaseNotesLinks = {
-    prod: "https://docs.cacophony.org.nz/home/release-notes-2020",
-    dev: "https://docs.cacophony.org.nz/home/release-notes-2"
-  };
+  console.log(process.cwd());
+
   for (const branch of branches) {
-    process.chdir(`./${branch}`);
-    const slsFiles = getFilesWithExtension(".", "sls");
+    // For each branch:
     versionData[branch] = {};
-    for (const path of slsFiles) {
-      const data = fs.readFileSync(path, "utf8");
-      try {
-        const yamlData = yaml.parse(data);
-        const versionInfo = findKeyInObject(yamlData, "cacophony.pkg_installed_from_github");
-        const name = versionInfo.find(item => item.hasOwnProperty("name")).name;
-        const version = versionInfo.find(item => item.hasOwnProperty("version")).version;
-        versionData[branch][name] = version;
-      } catch (e) {
+    process.chdir(`./${branch}`);
+    for (const model of models) {
+      // For each camera model:
+      process.chdir(`./${model}`);
+      const slsFiles = getFilesWithExtension(".", "sls");
+      versionData[branch][model] = {};
+      for (const path of slsFiles) {
+        const data = fs.readFileSync(path, "utf8");
+        try {
+          const yamlData = yaml.parse(data);
+          const versionInfo = findKeyInObject(yamlData, "cacophony.pkg_installed_from_github");
+          const name = versionInfo.find(item => item.hasOwnProperty("name")).name;
+          const version = versionInfo.find(item => item.hasOwnProperty("version")).version;
+          versionData[branch][model][name] = version;
+        } catch (e) {
+        }
       }
+      process.chdir("../");
     }
     process.chdir("../");
   }
-
-  // Output the text to the README.md file, if the version info has changed since last time.
-  for (const branch of branches) {
-    versionOutput += `#### Branch \`${branch}\`\n`;
-    for (const [key, val] of Object.entries(versionData[branch])) {
-      versionOutput += ` * ${key}: ${val}\n`;
-    }
-    if (releaseNotesLinks[branch]) {
-      versionOutput += `\n[Release notes](${releaseNotesLinks[branch]})\n`;
-    }
+  process.chdir("./salt-version-info");
+  let prevVersionData;
+  try {
+    const prevVersionInfo = fs.readFileSync("./salt-version-info.json", "utf8");
+    prevVersionData = JSON.parse(prevVersionInfo);
+  } catch (e) {
+    console.log(e);
   }
+  if ((prevVersionData && !versionsAreEqual(prevVersionData, versionData)) || !prevVersionData) {
+    versionData.updated = new Date().toISOString();
+    console.log("version info updated", JSON.stringify(versionData, null, '\t'));
+    fs.writeFileSync("./salt-version-info.json", JSON.stringify(versionData, null, '\t'));
 
-  // Just write out on the dev branch.
-  const branch = "dev";
-  let prevVersionOutput = "";
-  process.chdir(`./${branch}`);
-  const readme = fs.readFileSync("README.md", "utf8");
-  const versionInfoStart = readme.indexOf("\n\n#### Version information");
-  let output;
-  if (versionInfoStart !== -1) {
-    output = readme.substring(0, versionInfoStart);
-    prevVersionOutput = readme.substring(readme.indexOf(separator) + separator.length);
-  } else {
-    output = readme;
-  }
-  output += "\n\n#### Version information ";
-  output += `(_Updated ${formatDate(now)}_):\n`;
-  output += separator;
-  output += versionOutput;
-  if (versionOutput !== prevVersionOutput) {
-    fs.writeFileSync("README.md", output);
     if (repo === "TheCacophonyProject/saltops") {
-      console.log("Committing changes for branch", branch);
       {
         const {stderr, stdout} = await exec("git config user.name cacophony-bot");
         console.log("1:", stderr, stdout);
@@ -132,9 +137,7 @@ const formatDate = date => {
       }
     }
   } else {
-    // Version info is unchanged.
     console.log("version information unchanged");
   }
   process.chdir("../");
-
 }());
