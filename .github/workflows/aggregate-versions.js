@@ -8,8 +8,6 @@ const args = process.argv;
 const repo = args[2];
 
 const getFilesWithExtension = (path, ext) => {
-  console.log(process.cwd());
-  console.log(fs.readdirSync(path));
   const items = fs.readdirSync(path)
     .filter(item => (
       !item.startsWith(".") &&
@@ -26,7 +24,6 @@ const getFilesWithExtension = (path, ext) => {
       files.push(`${path}/${item.name}`);
     }
   }
-  console.log(files);
   return files;
 }
 const findKeyInObject = (obj, key) => {
