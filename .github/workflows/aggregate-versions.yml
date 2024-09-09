@@ -27,7 +27,7 @@ jobs:
         with:
           repository: TheCacophonyProject/salt-version-info
           path: salt-version-info
-          token: ${{ secrets.CACOPHONY_BOT_TOKEN }}
+          token: ${{ secrets.WRITE_VERSION_INFO_TOKEN }}
           persist-credentials: true
       - uses: actions/setup-node@v2.1.2
         with:
