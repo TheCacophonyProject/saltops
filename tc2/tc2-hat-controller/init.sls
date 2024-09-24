@@ -1,7 +1,7 @@
 tc2-hat-controller-pkg:
   cacophony.pkg_installed_from_github:
     - name: tc2-hat-controller
-    - version: "0.11.1"
+    - version: "0.13.0"
     - architecture: "arm64"
     - branch: "main"
 
@@ -25,7 +25,7 @@ tc2-hat-rtc-service:
     - name: tc2-hat-rtc
     - enable: True
 
-#tc2-hat-uart-service:
-#  service.running:
-#    - name: tc2-hat-uart
-#    - enable: True
+tc2-hat-comms-service:
+  service.running:
+    - name: tc2-hat-comms
+    - enable: True
