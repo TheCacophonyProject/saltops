@@ -67,7 +67,7 @@ const versionsAreEqual = (prev, next) => {
   }
   return true;
 };
-const latstCommitDate = async (branch) => {
+const latestCommitDate = async (branch) => {
   try {
     console.log("Getting latest commit for ", branch);
     const response = await fetch(`https://api.github.com/repos/TheCacophonyProject/saltops/commits?sha=${branch}&per_page=1`);
@@ -94,7 +94,7 @@ const latstCommitDate = async (branch) => {
     // For each branch:
     versionData[branch] = {};
     process.chdir(`./${branch}`);
-    const commitDate = await latstCommitDate(branch)
+    const commitDate = await latestCommitDate(branch)
     console.log("got commit date",commitDate);
     for (const model of models) {
       // For each camera model:
