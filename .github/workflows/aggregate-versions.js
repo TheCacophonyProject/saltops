@@ -77,7 +77,7 @@ const latestCommitDate = async (branch) => {
 
     const commitJson = await response.json();
     const commitDate = commitJson[0]["commit"]["author"]["date"]
-    console.log(json);
+    console.log(commitJson);
     return commitDate
   } catch (error) {
     console.error(error.message);
