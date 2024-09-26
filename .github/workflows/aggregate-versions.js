@@ -67,6 +67,23 @@ const versionsAreEqual = (prev, next) => {
   }
   return true;
 };
+const latstCommitDate = async (branch) => {
+  try {
+    console.log("Getting latest commit for ", branch);
+    const response = await fetch(`https://api.github.com/repos/TheCacophonyProject/saltops/commits?sha=${branch}&per_page=1`);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const commitJson = await response.json();
+    const commitDate = commitJson[0]["commit"]["author"]["date"]
+    console.log(json);
+    return commitDate
+  } catch (error) {
+    console.error(error.message);
+  }
+  return "";
+}
 (async function () {
   const versionData = {};
   console.log(process.cwd());
@@ -77,11 +94,13 @@ const versionsAreEqual = (prev, next) => {
     // For each branch:
     versionData[branch] = {};
     process.chdir(`./${branch}`);
+    const commitDate = await latstCommitDate(branch)
+    console.log("got commit date",commitDate);
     for (const model of models) {
       // For each camera model:
       process.chdir(`./${model}`);
       const slsFiles = getFilesWithExtension(".", "sls");
-      versionData[branch][model] = {};
+      versionData[branch][model] = {"commitDate":commitDate};
       for (const path of slsFiles) {
         const data = fs.readFileSync(path, "utf8");
         try {
