@@ -11,6 +11,7 @@ modemd-pkg:
   cacophony.pkg_installed_from_github:
     - name: modemd
     - version: "1.11.0-tc2"
+    - architecture: "arm64"
     - branch: "tc2"
 
 modemd:
