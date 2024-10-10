@@ -1,7 +1,8 @@
 device-register-pkg:
   cacophony.pkg_installed_from_github:
     - name: device-register
-    - version: "1.6.0"
+    - version: "1.6.1"
+    - architecture: "arm64"
     - branch: master
 
 /etc/systemd/system/device-register.service.d:
