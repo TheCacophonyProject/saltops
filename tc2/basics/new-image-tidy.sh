@@ -41,6 +41,7 @@ FILES_TO_KEEP=(
   "attiny-firmware.hex"
   "rp2040-firmware.elf"
   "salt-nodegroup"
+  "raspberrypi-swd.cfg"
 )
 
 # Create an associative array for quick lookup
