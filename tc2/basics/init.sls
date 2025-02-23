@@ -61,3 +61,8 @@ restart_swap_service:
         /sbin/dphys-swapfile swapon
     - onchanges:
       - file: manage_swapfile
+
+/etc/apt/apt.conf.d/99-allow-downgrades:
+  file.managed:
+    - source: salt://tc2/basics/99-allow-downgrades
+    - mode: 0644
