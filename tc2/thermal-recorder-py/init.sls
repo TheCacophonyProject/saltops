@@ -55,5 +55,6 @@ thermal-recorder-service:
     - source: salt://tc2/thermal-recorder-py/download-model
     - mode: 755
 
-'download-model pi-v0.6':
+# When updating the version make sure to update the hash also.
+'download-model pi-v0.6 b4a8d3798dc57bcdd18906651676b8fef5a60a5449117c1a4ed7690a8deaddf2':
   cmd.run
