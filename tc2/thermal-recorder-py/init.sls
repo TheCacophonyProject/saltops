@@ -56,5 +56,5 @@ thermal-recorder-service:
     - mode: 755
 
 # When updating the version make sure to update the hash also.
-'download-model pi-v0.6 b4a8d3798dc57bcdd18906651676b8fef5a60a5449117c1a4ed7690a8deaddf2':
+'download-model pi-v0.6 8c8ad1c4505e356bf526f7b61f84e754ff95beddb86d71c59d3fff720a6692a6':
   cmd.run

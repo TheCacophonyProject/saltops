@@ -10,7 +10,7 @@ fi
 
 VERSION="$1"
 EXPECTED_HASH="$2"
-MODEL_PARENT_DIR="/home/cam/Downloads"
+MODEL_PARENT_DIR="/home/pi"
 MODEL_DIR="${MODEL_PARENT_DIR}/tflite"
 TAR_FILENAME="inc3-tflite-15122023.tar"
 URL="https://github.com/TheCacophonyProject/AI-Model/releases/download/${VERSION}/${TAR_FILENAME}"
