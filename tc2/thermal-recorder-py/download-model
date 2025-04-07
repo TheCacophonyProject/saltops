@@ -1,58 +1,55 @@
 #!/bin/bash
 
-set -e
-if [ "$#" -ne 1 ]; then
-    echo "Usage: download-model <release-version>"
+set -euo pipefail
+
+if [ "$#" -ne 2 ]; then
+    echo "Usage: download-model <release-version> <shasum>"
+    echo "The shasum is calculated by 'find <model-dir>/. -type f -exec sha256sum {} + | sort | sha256sum'"
     exit 1
 fi
 
-cd /home/pi
 VERSION="$1"
+EXPECTED_HASH="$2"
+MODEL_PARENT_DIR="/home/pi"
+MODEL_DIR="${MODEL_PARENT_DIR}/tflite"
 TAR_FILENAME="inc3-tflite-15122023.tar"
-TAR_FILENAME_VERSION="${VERSION}_${TAR_FILENAME}"
-EXTRACTED_DIR="tflite"
-EXTRACTED_DIR_VERSION="${VERSION}_${EXTRACTED_DIR}"
 URL="https://github.com/TheCacophonyProject/AI-Model/releases/download/${VERSION}/${TAR_FILENAME}"
 
-# Check that the files have been extracted and linked already.
-if [[ -d "$EXTRACTED_DIR_VERSION" && "$(readlink "$EXTRACTED_DIR")" == "$EXTRACTED_DIR_VERSION" ]]; then
+# This will check that the files are correct by:
+# - Find all files for the model.
+# - Sort them so the hashes are in a consistent order.
+# - Hash the combined hashes to make sure that the files are as expected.
+check_files_hash() {
+    local generated_hash=$(find "${MODEL_DIR}/." -type f -exec sha256sum {} + | sort | sha256sum | awk '{print $1}')
+    if [ "$generated_hash" = "$EXPECTED_HASH" ]; then
+        echo "Files hash matches."
+        return 0
+    else
+        echo "Files hash mismatch!"
+        echo "Expected: $EXPECTED_HASH"
+        echo "Found:    $generated_hash"
+        return 1
+    fi
+}
+
+echo "Checking if the model is already setup..."
+if check_files_hash; then
     echo "Model already setup for $VERSION"
     exit 0
 fi
+echo "Hash mismatch. The folder may be setup for the wrong model or didn't extract correctly."
 
-echo "Updating model to $VERSION"
+echo "Downloading $TAR_FILENAME from GitHub..."
+wget -nv "$URL" --output-document="/tmp/$TAR_FILENAME"
 
-if [[ -f "$TAR_FILENAME_VERSION" ]]; then
-    echo "TAR already downloaded."
+echo "Extracting $TAR_FILENAME"
+tar -xf "/tmp/$TAR_FILENAME" -C "${MODEL_PARENT_DIR}"
+
+if check_files_hash; then
+    echo "Model now setup for $VERSION"
+    exit 0
 else
-    echo "Downloading $TAR_FILENAME from GitHub..."
-    wget -nv "$URL"
-    mv $TAR_FILENAME $TAR_FILENAME_VERSION
+    echo "Hash mismatch!"
+    echo "Hash mismatch after downloading and extracting the model."
+    exit 1
 fi
-
-if [[ -d "$EXTRACTED_DIR_VERSION" ]]; then
-    echo "Files already extracted."
-else 
-    echo "Extracting $TAR_FILENAME_VERSION"
-    tar -xf "$TAR_FILENAME_VERSION"
-    mv "$EXTRACTED_DIR" "$EXTRACTED_DIR_VERSION"
-fi
-
-if [[ -e "$EXTRACTED_DIR" ]]; then
-    echo "Removing old linked dir.."
-    rm -r "$EXTRACTED_DIR"
-fi
-
-echo "Making link to new model"
-ln -s "$EXTRACTED_DIR_VERSION" "$EXTRACTED_DIR"
-
-echo "Deleting old files"
-old_tar_files="$(find . -name "*_${TAR_FILENAME}" | sed "/$TAR_FILENAME_VERSION/d")"
-if [[ $old_tar_files != "" ]]; then
-    rm $old_tar_files
-fi
-old_extracted_files=$(find . -name "*_${EXTRACTED_DIR}" | sed  "/$EXTRACTED_DIR_VERSION/d")
-if [[ $old_extracted_files != "" ]]; then
-    rm -r $old_extracted_files
-fi
-echo "done"
