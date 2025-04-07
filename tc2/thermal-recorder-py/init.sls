@@ -37,7 +37,7 @@ classifier-env:
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
     - name: classifier-pipeline
-    - version: "0.0.16"
+    - version: "0.0.19"
     - venv: /home/pi/.venv/classifier/bin/
 
 thermal-recorder-py-service:
@@ -55,5 +55,6 @@ thermal-recorder-service:
     - source: salt://tc2/thermal-recorder-py/download-model
     - mode: 755
 
-'download-model pi-v0.6':
+# When updating the version make sure to update the hash also.
+'download-model pi-v0.6 8c8ad1c4505e356bf526f7b61f84e754ff95beddb86d71c59d3fff720a6692a6':
   cmd.run
