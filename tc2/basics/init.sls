@@ -44,6 +44,10 @@ disable_apt_daily_upgrade_timer:
     - name: apt-daily-upgrade.timer
     - enable: False
 
+disable_man_db_services:
+  service.dead:
+    - name: man-db.timer
+    - enable: False
 
 manage_swapfile:
   file.managed:
