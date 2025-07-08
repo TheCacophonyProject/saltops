@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 4 ]; then
     echo "Usage: download-model <release-version> <shasum>"
     echo "The shasum is calculated by 'find <model-dir>/. -type f -exec sha256sum {} + | sort | sha256sum'"
     exit 1
@@ -11,8 +11,8 @@ fi
 VERSION="$1"
 EXPECTED_HASH="$2"
 MODEL_PARENT_DIR="/home/pi"
-MODEL_DIR="${MODEL_PARENT_DIR}/tflite"
-TAR_FILENAME="inc3-tflite-15122023.tar"
+TAR_FILENAME="$3"
+MODEL_DIR="${MODEL_PARENT_DIR}/$4"
 URL="https://github.com/TheCacophonyProject/AI-Model/releases/download/${VERSION}/${TAR_FILENAME}"
 
 # This will check that the files are correct by:
