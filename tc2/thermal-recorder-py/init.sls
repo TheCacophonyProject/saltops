@@ -33,6 +33,11 @@ classifier-env:
   virtualenv.managed:
     - name:  /home/pi/.venv/classifier
 
+#stop it before updating, might help update faster
+thermal-recorder-service:
+  service.dead:
+    - name: thermal-recorder-py
+    - enable: False
 
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
