@@ -10,7 +10,7 @@ stop_modem_manager:
 modemd-pkg:
   cacophony.pkg_installed_from_github:
     - name: modemd
-    - version: "1.14.0-tc2"
+    - version: "1.14.1-tc2"
     - architecture: "arm64"
     - branch: "tc2"
 
@@ -30,3 +30,7 @@ delayed_restart_modemd:
     - onchanges:
       - cacophony: modemd-pkg
     - order: last
+
+/etc/modprobe.d/usbserial.conf:
+   file.managed:
+     - source: salt://tc2/modemd/usbserial.modprobe.conf
