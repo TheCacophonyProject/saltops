@@ -47,6 +47,9 @@ def pkg_installed_from_pypi(
             "changes": {},
         }
 
+    # stop it before updating, might help update faster
+    __states__["service.dead"](name="thermal-recorder-py", enable=False)
+
     if venv is None:
         pip_path = "pip"
     else:
