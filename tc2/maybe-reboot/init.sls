@@ -5,3 +5,4 @@ reboot_after_boot_changes:
     - onchanges:
       - /boot/firmware/config.txt
       - /boot/firmware/cmdline.txt
+      - /etc/modprobe.d/usbserial.conf
