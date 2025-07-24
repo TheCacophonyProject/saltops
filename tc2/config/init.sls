@@ -4,7 +4,7 @@
 cacophony-config-pkg:
   cacophony.pkg_installed_from_github:
     - name: go-config
-    - version: "1.23.1"
+    - version: "1.25.2"
     - architecture: "arm64"
     - pkg_name: cacophony-config
     - branch: master
