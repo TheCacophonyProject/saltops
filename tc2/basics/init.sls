@@ -57,6 +57,14 @@ manage_swapfile:
     - user: root
     - group: root
 
+set_swappiness:
+  file.managed:
+    - name: /etc/sysctl.d/99-swap.conf
+    - source: salt://tc2/basics/99-swap.conf
+    - mode: 0644
+    - user: root
+    - group: root
+
 restart_swap_service:
   cmd.run:
     - name: |
