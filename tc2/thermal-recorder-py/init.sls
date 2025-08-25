@@ -17,9 +17,9 @@ git:
    file.managed:
      - source: salt://tc2/thermal-recorder-py/thermal-postprocess.service
 
-/etc/systemd/system/thermal-dbustlistener.service:
+/etc/systemd/system/thermal-dbuslistener.service:
    file.managed:
-     - source: salt://tc2/thermal-recorder-py/thermal-dbustlistener.service
+     - source: salt://tc2/thermal-recorder-py/thermal-dbuslistener.service
 
 classifier-eqs:
   pkg.installed:
