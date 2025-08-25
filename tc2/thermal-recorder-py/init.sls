@@ -9,6 +9,18 @@ git:
    file.managed:
      - source: salt://tc2/thermal-recorder-py/thermal-recorder-py.service
 
+/etc/systemd/system/thermal-classifier.service:
+   file.managed:
+     - source: salt://tc2/thermal-recorder-py/thermal-classifier.service
+
+/etc/systemd/system/thermal-postprocess.service:
+   file.managed:
+     - source: salt://tc2/thermal-recorder-py/thermal-postprocess.service
+
+/etc/systemd/system/thermal-dbustlistener.service:
+   file.managed:
+     - source: salt://tc2/thermal-recorder-py/thermal-dbustlistener.service
+
 classifier-eqs:
   pkg.installed:
     - pkgs:
@@ -36,7 +48,7 @@ classifier-env:
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
     - name: classifier-pipeline
-    - version: "0.0.29"
+    - version: "0.0.30"
     - venv: /home/pi/.venv/classifier/bin/
 
 thermal-recorder-py-service:
