@@ -1,7 +1,7 @@
 tc2-hat-controller-pkg:
   cacophony.pkg_installed_from_github:
     - name: tc2-hat-controller
-    - version: "0.20.2"
+    - version: "0.20.3"
     - architecture: "arm64"
     - branch: "main"
 
