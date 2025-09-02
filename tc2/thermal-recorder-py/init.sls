@@ -55,8 +55,8 @@ thermal-recorder-service:
     - mode: 755
 
 # When updating the version make sure to update the hash also.
-'download-model pi-v0.6 8c8ad1c4505e356bf526f7b61f84e754ff95beddb86d71c59d3fff720a6692a6  inc3-tflite-15122023.tar tflite':
+'download-model pi-v0.6 inc3-tflite-15122023.tar tflite 8c8ad1c4505e356bf526f7b61f84e754ff95beddb86d71c59d3fff720a6692a6':
   cmd.run
 
-'download-model rf-fp-v0.3 172dea33f93cc43b71b989309bfb6f4a6122221846fdf1fa09da7fd6bb2c60b9 forestmodel.tar rf-fp-model':
+'download-model rf-fp-v0.4 forestmodel.tar rf-fp-model fceacd8729f661ef438e9dea12221ccddb531a4d7e6c375c1b4c6224b841b33b':
   cmd.run
