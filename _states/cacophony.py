@@ -133,7 +133,7 @@ def pkg_installed_from_github(
         install_start_time = time.time()
         install_ret = __salt__["cmd.run_all"](f"dpkg -i {deb_path}", python_shell=False)
         install_duration = time.time() - install_start_time
-        print(install_ret)
+
         if install_ret["retcode"] != 0:
             ret["result"] = False
             ret["comment"] = "dpkg failed to install {}. Stderr: {}".format(deb_path, install_ret["stderr"])
