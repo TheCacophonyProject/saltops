@@ -1,0 +1,12 @@
+[Unit]
+Description=Cacophony Project Python Thermal Dbus listener
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/home/pi/.venv/classifier/bin/dbus_listener
+Restart=always
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
