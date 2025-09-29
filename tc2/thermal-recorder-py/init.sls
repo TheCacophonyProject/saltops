@@ -54,7 +54,7 @@ classifier-pipeline-pip:
 thermal-recorder-py-service:
   service.running:
     - name: thermal-recorder-py
-    - ena1ble: True
+    - enable: True
 
 thermal-recorder-service:
   service.dead:
