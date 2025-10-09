@@ -8,3 +8,7 @@ rpi-net-manager-service:
   service.running:
     - name: rpi-net-manager
     - enable: True
+
+hostapd:
+  pkg.installed
+
