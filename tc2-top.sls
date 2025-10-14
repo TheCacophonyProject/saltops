@@ -8,6 +8,7 @@ base:
     - tc2/auth
     - tc2/salt-minion
     - tc2/network-manager
+    - tc2/rtl8821au
     - tc2/watchdog
     - tc2/event-reporter
     - tc2/thermal-uploader
