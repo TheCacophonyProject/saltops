@@ -10,7 +10,7 @@ stop_modem_manager:
 modemd-pkg:
   cacophony.pkg_installed_from_github:
     - name: modemd
-    - version: "1.15.1"
+    - version: "1.16.0"
     - architecture: "arm64"
     - branch: "tc2"
 
