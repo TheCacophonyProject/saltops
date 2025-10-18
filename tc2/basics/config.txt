@@ -49,5 +49,8 @@ gpio=6,12=ip,pd
 # Set SWD pins to input so RP2040 can be programmed externally.
 gpio=25,24=ip
 
+# Set I2C lock pin to a pull-up input.
+gpio=13=ip,pu
+
 # Set GPIO pin to trigger shutdown.
 dtoverlay=gpio-shutdown,debounce=1,gpio_pin=26,gpio_pull=up
