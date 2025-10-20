@@ -1,7 +1,7 @@
 event-reporter-pkg:
   cacophony.pkg_installed_from_github:
     - name: event-reporter
-    - version: "3.12.1"
+    - version: "3.12.2"
     - architecture: "arm64"
     - branch: "master"
 
