@@ -41,7 +41,6 @@
 
 {% set branch = salt['pillar.get']('rtl8821au:branch', 'main') %}
 {% set source_dir = salt['pillar.get']('rtl8821au:source_dir', '/usr/local/src/8821au-20210708') %}
-{% set install_marker = salt['pillar.get']('rtl8821au:install_marker', source_dir ~ '/.salt-driver-installed') %}
 {% set auto_update = salt['pillar.get']('rtl8821au:auto_update', False) %}
 
 {% set rtl8821au = {
@@ -50,7 +49,6 @@
   'repo': salt['pillar.get']('rtl8821au:repo', 'https://github.com/morrownr/8821au-20210708.git'),
   'branch': branch,
   'source_dir': source_dir,
-  'install_marker': install_marker,
   'auto_update': auto_update,
   'install_args': salt['pillar.get']('rtl8821au:install_args', ['NoPrompt']),
 } %}
