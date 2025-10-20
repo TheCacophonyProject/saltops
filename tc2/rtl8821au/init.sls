@@ -1,6 +1,5 @@
 {% from "tc2/rtl8821au/map.jinja" import rtl8821au with context %}
 {% set device_present = salt['cacophony.has_usb_device'](rtl8821au['device_ids']) %}
-{% set install_marker = rtl8821au['install_marker'] %}
 {% set driver_installed = salt['cmd.retcode'](['modinfo', '8821au']) == 0 %}
 {% set should_install = rtl8821au['auto_update'] or not driver_installed %}
 {% set install_command = "./install-driver.sh" %}
@@ -38,9 +37,6 @@ rtl8821au-source:
       - pkg: rtl8821au-deps
 {% endif %}
     - user: root
-{% if not rtl8821au['auto_update'] %}
-    - unless: test -f "{{ install_marker }}"
-{% endif %}
 
 rtl8821au-install:
   cmd.run:
@@ -82,19 +78,6 @@ rtl8821au-enable-tc2-hat-attiny:
       - cmd: rtl8821au-reinstall
       - service: rtl8821au-disable-tc2-hat-attiny
 
-rtl8821au-marker:
-  file.managed:
-    - name: {{ install_marker }}
-    - contents: installed
-    - makedirs: True
-    - onlyif: modinfo 8821au
-    - require:
-      - git: rtl8821au-source
-      - cmd: rtl8821au-install
-      - cmd: rtl8821au-reinstall
-      - service: rtl8821au-enable-tc2-agent
-      - service: rtl8821au-enable-tc2-hat-attiny
-    - unless: test -f "{{ install_marker }}"
 {% else %}
 rtl8821au-installed:
   test.nop:
