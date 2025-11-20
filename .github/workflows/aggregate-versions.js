@@ -28,7 +28,7 @@ const getFilesWithExtension = (path, ext) => {
 }
 const findKeyInObject = (obj, key) => {
   for (const [k, v] of Object.entries(obj)) {
-    if (k === key) {
+    if (k.match(key)) {
       return v;
     } else if (typeof v === 'object') {
       const deeper = findKeyInObject(v, key);
@@ -104,7 +104,7 @@ const latestCommitDate = async (branch) => {
         const data = fs.readFileSync(path, "utf8");
         try {
           const yamlData = yaml.parse(data);
-          const versionInfo = findKeyInObject(yamlData, "cacophony.pkg_installed_from_github");
+          const versionInfo = findKeyInObject(yamlData, "cacophony.pkg_installed_from_*");
           const name = versionInfo.find(item => item.hasOwnProperty("name")).name;
           const version = versionInfo.find(item => item.hasOwnProperty("version")).version;
           versionData[branch][model][name] = version;
