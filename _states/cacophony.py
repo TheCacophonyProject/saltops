@@ -92,7 +92,9 @@ def pkg_installed_from_github(
         pkg_name = name
 
     installed_version_cmd = f"dpkg-query --showformat='${{Version}}' --show {pkg_name}"
-    installed_version_ret = __salt__["cmd.run_all"](installed_version_cmd, python_shell=False)
+    installed_version_ret = __salt__["cmd.run_all"](
+        installed_version_cmd, python_shell=False
+    )
 
     installed_version = ""
     if installed_version_ret["retcode"] == 0:
@@ -124,7 +126,7 @@ def pkg_installed_from_github(
         download_start_time = time.time()
         source_url = f"https://github.com/TheCacophonyProject/{name}/releases/download/v{version}/{pkg_name}_{version}_{architecture}.deb"
         download_ret = __salt__["cp.get_url"](source_url, deb_path, makedirs=True)
-        download_duration = time.time() - download_start_time    
+        download_duration = time.time() - download_start_time
         if not download_ret:
             ret["comment"] = f"Failed to download package from {source_url}"
             return ret
@@ -136,10 +138,14 @@ def pkg_installed_from_github(
 
         if install_ret["retcode"] != 0:
             ret["result"] = False
-            ret["comment"] = "dpkg failed to install {}. Stderr: {}".format(deb_path, install_ret["stderr"])
+            ret["comment"] = "dpkg failed to install {}. Stderr: {}".format(
+                deb_path, install_ret["stderr"]
+            )
         else:
             ret["result"] = True
-            ret["comment"] = f"Package {pkg_name} version {version} installed successfully in {(time.time() - start_time):.2f}. (download: {download_duration:.2f}s, install: {install_duration:.2f}s)."
+            ret["comment"] = (
+                f"Package {pkg_name} version {version} installed successfully in {(time.time() - start_time):.2f}. (download: {download_duration:.2f}s, install: {install_duration:.2f}s)."
+            )
             ret["changes"] = {
                 "old": installed_version,
                 "new": version,
@@ -150,8 +156,9 @@ def pkg_installed_from_github(
         if os.path.exists(package_tmp_dir):
             os.remove(deb_path)
         os.rmdir(package_tmp_dir)
-    
+
     return ret
+
 
 def init_alsa(name):
     """Ensure that the built-in audio hardware is correctly initialised."""
