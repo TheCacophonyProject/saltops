@@ -9,6 +9,18 @@ git:
    file.managed:
      - source: salt://tc2/thermal-recorder-py/thermal-recorder-py.service
 
+/etc/systemd/system/thermal-classifier.service:
+   file.managed:
+     - source: salt://tc2/thermal-recorder-py/thermal-classifier.service
+
+/etc/systemd/system/thermal-postprocess.service:
+   file.managed:
+     - source: salt://tc2/thermal-recorder-py/thermal-postprocess.service
+
+/etc/systemd/system/thermal-dbuslistener.service:
+   file.managed:
+     - source: salt://tc2/thermal-recorder-py/thermal-dbuslistener.service
+
 classifier-eqs:
   pkg.installed:
     - pkgs:
@@ -36,7 +48,7 @@ classifier-env:
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
     - name: classifier-pipeline
-    - version: "0.0.29"
+    - version: "0.0.38"
     - venv: /home/pi/.venv/classifier/bin/
 
 thermal-recorder-py-service:
@@ -55,8 +67,8 @@ thermal-recorder-service:
     - mode: 755
 
 # When updating the version make sure to update the hash also.
-'download-model pi-v0.6 inc3-tflite-15122023.tar tflite 8c8ad1c4505e356bf526f7b61f84e754ff95beddb86d71c59d3fff720a6692a6':
+'download-model pi-v0.8 model.tar tflite 75ad09596ea5a037def91d7e40488db6be03ce137210d402567ec8d6fa8ac43e':
   cmd.run
 
-'download-model rf-fp-v0.4 forestmodel.tar rf-fp-model fceacd8729f661ef438e9dea12221ccddb531a4d7e6c375c1b4c6224b841b33b':
+'download-model rf-fp-v0.5 forestmodel.tar rf-fp-model 0bdef1c9b7cc6c9ff96c07683127ab3d494277307d69293ffca0867b918ca399':
   cmd.run
