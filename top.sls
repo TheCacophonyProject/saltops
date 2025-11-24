@@ -207,6 +207,7 @@ prod:
     - tc2/thermal-uploader
     - tc2/thermal-recorder-py
     - tc2/rpi-net-manager
+    - tc2/rtl8821au
     - tc2/management-interface
     - tc2/device-register
     - tc2/salt-updater
