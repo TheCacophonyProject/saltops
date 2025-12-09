@@ -5,8 +5,7 @@
 salt-updater-pkg:
   cacophony.pkg_installed_from_github:
     - name: salt-updater
-    - version: "0.8.5" # Remove the architecture line next version update (will default to arm64)
-    - architecture: "arm"
+    - version: "0.9.0"
 
 salt-updater:
   service.running:
