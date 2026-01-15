@@ -48,13 +48,23 @@ classifier-env:
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
     - name: classifier-pipeline
-    - version: "0.0.43"
+    - version: "0.0.44"
     - venv: /home/pi/.venv/classifier/bin/
+
+thermal-classifier-service:
+  service.running:
+    - name: thermal-classifier
+    - enable: False
+
+thermal-postprocess-service:
+  service.running:
+    - name: thermal-postprocess
+    - enable: False
 
 thermal-recorder-py-service:
   service.running:
     - name: thermal-recorder-py
-    - enable: True
+    - enable: False
 
 thermal-recorder-service:
   service.dead:
