@@ -48,7 +48,7 @@ classifier-env:
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
     - name: classifier-pipeline
-    - version: "0.0.45"
+    - version: "0.0.47"
     - venv: /home/pi/.venv/classifier/bin/
 
 thermal-classifier-service:
