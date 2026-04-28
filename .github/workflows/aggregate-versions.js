@@ -105,10 +105,11 @@ const latestCommitDate = async (branch) => {
         try {
           const yamlData = yaml.parse(data);
           const versionInfo = findKeyInObject(yamlData, "cacophony.pkg_installed_from_*");
-          let name = versionInfo.find(item => item.hasOwnProperty("pkg_name")).pkg_name;
-          if (!name) {
-             name = versionInfo.find(item => item.hasOwnProperty("name")).name;
+          let nameField = versionInfo.find(item => item.hasOwnProperty("pkg_name"));
+          if (!nameField) {
+              nameField = versionInfo.find(item => item.hasOwnProperty("name"));
           }
+          const name = nameField.pkg_name || nameField.name;  
           const version = versionInfo.find(item => item.hasOwnProperty("version")).version;
           versionData[branch][model][name] = version;
         } catch (e) {
