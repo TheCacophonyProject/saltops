@@ -1,6 +1,6 @@
 {% from "tc2/rtl8821au/map.jinja" import rtl8821au with context %}
 {% set device_present = salt['cacophony.has_usb_device'](rtl8821au['device_ids']) %}
-{% set driver_installed = salt['cmd.retcode'](['modinfo', '8821au']) == 0 %}
+{% set driver_installed = salt['cmd.retcode']('modinfo 8821au', output_loglevel='quiet') == 0 %}
 {% set should_install = rtl8821au['auto_update'] or not driver_installed %}
 {% set install_command = "./install-driver.sh" %}
 {% if rtl8821au['install_args'] %}
