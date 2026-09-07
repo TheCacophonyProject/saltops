@@ -57,6 +57,9 @@ def pkg_installed_from_pypi(
     else:
         pip_path = "{}/pip".format(venv)
 
+    # stop it before updating, might help update faster
+    __states__["service.dead"](name="thermal-recorder-py", enable=False)
+
     if installed_version is not None and name == "classifier-pipeline":
         version_numbers = installed_version.split(".")
         # uninstall old packages which are no longer needed, this is a one off
@@ -71,10 +74,6 @@ def pkg_installed_from_pypi(
                 name="opencv-python",
                 bin_env=pip_path,
             )
-
-    # stop it before updating, might help update faster
-    __states__["service.dead"](name="thermal-recorder-py", enable=False)
-
 
 
     ret = __states__["pip.installed"](
