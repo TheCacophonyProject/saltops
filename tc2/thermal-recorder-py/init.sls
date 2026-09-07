@@ -45,32 +45,36 @@ classifier-env:
   virtualenv.managed:
     - name:  /home/pi/.venv/classifier
 
-classifier-pipeline-pip:
-  cacophony.pkg_installed_from_pypi:
-    - name: classifier-pipeline
-    - version: "0.0.59"
-    - venv: /home/pi/.venv/classifier/bin/
 
 thermal-classifier-service:
-  service.running:
+  service.dead:
     - name: thermal-classifier
     - enable: False
 
 thermal-postprocess-service:
-  service.running:
+  service.dead:
     - name: thermal-postprocess
     - enable: False
 
-thermal-recorder-py-service:
-  service.running:
-    - name: thermal-recorder-py
-    - enable: False
+
 
 thermal-recorder-service:
   service.dead:
     - name: thermal-recorder
     - enable: False
 
+classifier-pipeline-pip:
+  cacophony.pkg_installed_from_pypi:
+    - name: classifier-pipeline
+    - version: "0.0.60"
+    - venv: /home/pi/.venv/classifier/bin/
+
+
+thermal-recorder-py-service:
+  service.running:
+    - name: thermal-recorder-py
+    - enable: True
+    
 /usr/bin/download-model:
   file.managed:
     - source: salt://tc2/thermal-recorder-py/download-model

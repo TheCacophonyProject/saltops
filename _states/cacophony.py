@@ -2,6 +2,9 @@ import os
 import subprocess
 import tempfile
 import time
+import logging
+
+log = logging.getLogger(__name__)
 
 
 def pkg_installed_from_pypi(
@@ -41,6 +44,7 @@ def pkg_installed_from_pypi(
         installed_version = installed_version.strip()
     except:
         installed_version = None
+        
     if installed_version == version:
         return {
             "name": pkg_name,
@@ -48,14 +52,30 @@ def pkg_installed_from_pypi(
             "comment": "Version %s already installed." % version,
             "changes": {},
         }
-
-    # stop it before updating, might help update faster
-    __states__["service.dead"](name="thermal-recorder-py", enable=False)
-
     if venv is None:
         pip_path = "pip"
     else:
         pip_path = "{}/pip".format(venv)
+
+    if installed_version is not None and name == "classifier-pipeline":
+        version_numbers = installed_version.split(".")
+        # uninstall old packages which are no longer needed, this is a one off
+        if len(version_numbers)==3 and version_numbers[0] == "0" and version_numbers[1] == "0" and int(version_numbers[2]) < 602:
+            log.info("Removing scipy and opencv-python from %s",version_numbers)
+
+            __states__["pip.removed"](
+                name="scipy",
+                bin_env=pip_path,
+            )
+            __states__["pip.removed"](
+                name="opencv-python",
+                bin_env=pip_path,
+            )
+
+    # stop it before updating, might help update faster
+    __states__["service.dead"](name="thermal-recorder-py", enable=False)
+
+
 
     ret = __states__["pip.installed"](
         name=" {}=={}".format(pkg_name, version),
