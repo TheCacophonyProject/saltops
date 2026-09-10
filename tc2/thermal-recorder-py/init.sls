@@ -66,7 +66,7 @@ thermal-recorder-service:
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
     - name: classifier-pipeline
-    - version: "0.0.60"
+    - version: "0.0.61"
     - venv: /home/pi/.venv/classifier/bin/
 
 
