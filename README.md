@@ -1,21 +1,31 @@
 # saltops
 
 ## Testing changes on a RaspberryPi
+
 - Use `state-apply-test.sh`
+
 ## Testing changes on a Server
+
 - Use `state-apply-server.sh`
 
-## Update process.
-### Updating dev.
-The `dev` branch is updated normally through PRs.
-### Updating test.
-The `test` branch is updated through pulling the latest changes from `dev`:
-- `git checkout -b update-test origin/test`
-- `git merge origin/dev`
-- Push changes to personal fork and make a PR on GitHub
+## Update process
+
+### Updating dev
+
+The `dev` branch can just get pushed to directly.
+
+### Updating test
+
+- Push your latest changes to `dev`: `git push upstream dev`
+- Fetch, so `upstream/dev` is current: `git fetch upstream`
+- Make an `update-test` branch on your fork: `git push personal upstream/dev:refs/heads/update-test`
+- On GitHub, make a PR merging `update-test` into `test`.
+
+If GitHub reports a conflict, a hotfix on `test` needs resolving by hand:
+`git checkout -b update-test upstream/test`, `git merge upstream/dev`, then push that to your fork instead.
 
 ### Updating prod
-The `prod` branch is updated through pulling the latest changes from `test`. This should only be done when the changes in test have been tested fully:
-- `git checkout -b update-prod origin/prod`
-- `git merge origin/test`
-- Push changes to personal fork and make a PR on GitHub
+
+- `git fetch upstream`
+- `git push personal upstream/test:refs/heads/update-prod`
+- On GitHub, make a PR merging `update-prod` into `prod`, again setting the base to `prod`.
