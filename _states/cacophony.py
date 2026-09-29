@@ -63,7 +63,7 @@ def pkg_installed_from_pypi(
     if installed_version is not None and name == "classifier-pipeline":
         version_numbers = installed_version.split(".")
         # uninstall old packages which are no longer needed, this is a one off
-        if len(version_numbers)==3 and version_numbers[0] == "0" and version_numbers[1] == "0" and int(version_numbers[2]) < 602:
+        if len(version_numbers)==3 and version_numbers[0] == "0" and version_numbers[1] == "0" and int(version_numbers[2]) < 60:
             log.info("Removing scipy and opencv-python from %s",version_numbers)
 
             __states__["pip.removed"](
