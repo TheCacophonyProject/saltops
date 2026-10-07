@@ -45,44 +45,47 @@ classifier-env:
   virtualenv.managed:
     - name:  /home/pi/.venv/classifier
 
-classifier-pipeline-pip:
-  cacophony.pkg_installed_from_pypi:
-    - name: classifier-pipeline
-    - version: "0.0.63"
-    - venv: /home/pi/.venv/classifier/bin/
 
 thermal-classifier-service:
-  service.running:
+  service.dead:
     - name: thermal-classifier
     - enable: False
 
 thermal-postprocess-service:
-  service.running:
+  service.dead:
     - name: thermal-postprocess
     - enable: False
 
-thermal-recorder-py-service:
-  service.running:
-    - name: thermal-recorder-py
-    - enable: False
+
 
 thermal-recorder-service:
   service.dead:
     - name: thermal-recorder
     - enable: False
 
+classifier-pipeline-pip:
+  cacophony.pkg_installed_from_pypi:
+    - name: classifier-pipeline
+    - version: "0.0.67"
+    - venv: /home/pi/.venv/classifier/bin/
+
+
+thermal-recorder-py-service:
+  service.running:
+    - name: thermal-recorder-py
+    - enable: True
+    
 /usr/bin/download-model:
   file.managed:
     - source: salt://tc2/thermal-recorder-py/download-model
     - mode: 755
 
 # When updating the version make sure to update the hash also.
-'download-model pi-v0.9 model.tar tflite a7fbb0fe1f27c1252053fd43af15705abfc01c10a98ce38b053045419073dc63':
+'download-model pi-v1.1 model.tar tflite 00a8df53f531133d233a70d0a1dfc21cfcddc57bd2d1abbd739c974376f0cd12':
   cmd.run
 
 'download-model rf-fp-v0.5 forestmodel.tar rf-fp-model 0bdef1c9b7cc6c9ff96c07683127ab3d494277307d69293ffca0867b918ca399':
   cmd.run
-
 
 
 /var/spool/cptv/test-recordings/:
