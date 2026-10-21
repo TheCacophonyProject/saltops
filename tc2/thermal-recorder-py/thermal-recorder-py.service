@@ -1,6 +1,9 @@
 [Unit]
 Description=Cacophony Project Python Thermal Recorder
-After=multi-user.target
+DefaultDependencies=no
+Wants=network-pre.target
+Before=network-pre.target
+After=local-fs.target systemd-modules-load.service
 
 [Service]
 Type=simple
