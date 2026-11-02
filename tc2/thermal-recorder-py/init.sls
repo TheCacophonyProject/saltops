@@ -66,9 +66,9 @@ thermal-recorder-service:
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
     - name: classifier-pipeline
-    - version: "0.0.70"
+    - version: "0.0.71"
     - venv: /home/pi/.venv/classifier/bin/
-    
+
 /usr/bin/download-model:
   file.managed:
     - source: salt://tc2/thermal-recorder-py/download-model
