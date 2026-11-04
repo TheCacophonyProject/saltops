@@ -1,7 +1,7 @@
 management-interface-pkg:
   cacophony.pkg_installed_from_github:
     - name: management-interface
-    - version: "1.51.7"
+    - version: "1.51.8"
     - architecture: "arm64"
     - branch: tc2
 
