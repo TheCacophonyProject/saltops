@@ -66,15 +66,9 @@ thermal-recorder-service:
 classifier-pipeline-pip:
   cacophony.pkg_installed_from_pypi:
     - name: classifier-pipeline
-    - version: "0.0.71"
+    - version: "0.0.74"
     - venv: /home/pi/.venv/classifier/bin/
 
-
-thermal-recorder-py-service:
-  service.running:
-    - name: thermal-recorder-py
-    - enable: True
-    
 /usr/bin/download-model:
   file.managed:
     - source: salt://tc2/thermal-recorder-py/download-model
@@ -87,6 +81,10 @@ thermal-recorder-py-service:
 'download-model rf-fp-v0.5 forestmodel.tar rf-fp-model 0bdef1c9b7cc6c9ff96c07683127ab3d494277307d69293ffca0867b918ca399':
   cmd.run
 
+thermal-recorder-py-service:
+  service.running:
+    - name: thermal-recorder-py
+    - enable: True
 
 /var/spool/cptv/test-recordings/:
   file.recurse:
