@@ -1,7 +1,7 @@
 thermal-uploader-pkg:
   cacophony.pkg_installed_from_github:
     - name: thermal-uploader
-    - version: "2.11.1"
+    - version: "2.12.0"
     - architecture: "arm64"
     - branch: master
 
